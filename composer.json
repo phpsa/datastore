@@ -1,0 +1,50 @@
+{
+  "name": "phpsa/datastore",
+  "description": "A datastore",
+  "license": "MIT",
+  "keywords": [
+    "datastore"
+  ],
+  "type": "library",
+  "authors": [
+    {
+      "name": "Craig Smith",
+      "email": "vxdhost@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "~3.7.0",
+    "phpunit/phpunit": "^7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Phpsa\\Datastore\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Phpsa\\Datastore\\Tests\\": "tests"
+    },
+    "files": [
+      "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
+    ]
+  },
+  "scripts": {
+    "phpunit": "phpunit"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Phpsa\\Datastore\\ServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
+  }
+}
