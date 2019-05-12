@@ -9,6 +9,9 @@ use Phpsa\Datastore\Helpers;
 use Phpsa\Datastore\DatastoreException;
 use Phpsa\Datastore\Repositories\DatastoreRepository;
 
+use Phpsa\Datastore\Models\Datastore as DatastoreModel;
+use Phpsa\Datastore\Models\DatastorePages;
+
 Class DatastoreController extends Controller {
 
 	/**
@@ -30,7 +33,27 @@ Class DatastoreController extends Controller {
 
 	}
 
+
+
 	public function pageById($id, $slug){
+
+		$page = DatastorePages::where('slug', $slug)->where('id', $id)->first();
+		if(!$page){
+			abort(404);
+		}
+
+		$datastore = $page->datastore;
+		$user = auth()->user();
+
+		if(!$datastore->statusActive() && (!$user || !$user->can('manage datastore'))) {
+			abort(404);
+		}
+
+		return view($datastore->getViewName())
+		->withDatastore($page->datastore)
+		->withChildren($page->datastore->getChildren())
+		->withPage($page);
+
 
 	}
 

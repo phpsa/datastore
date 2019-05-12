@@ -20,6 +20,7 @@ class Helpers {
 		}
 		$asset = array_pop($assetParts);
 		$list = self::getAssetList(true);
+
 		$list = !empty($assetParts) && isset($list[$assetParts[0]]) ? $list[$assetParts[0]] : array_shift($list);
 
 		if(!isset($list[$asset])){
@@ -28,33 +29,54 @@ class Helpers {
 		return $key ? $list[$asset]['class'] : $list[$asset];
 	}
 
+	public static function getAssetItem($className){
+		return array(
+			'class'			 => $className,
+			'name'			 => Asset::assetInfo($className, 'name'),
+			'name_singular'	 => Asset::assetInfo($className, 'name_singular'),
+			'shortname'	     => Asset::assetInfo($className, 'shortname'),
+			'icon'			 => Asset::assetInfo($className, 'icon'),
+			'children'		 => Asset::assetInfo($className, 'children'),
+			'is_child'		 => Asset::assetInfo($className, 'is_child'),
+			'max_instances'	 => Asset::assetInfo($className, 'max_instances'),
+			'about'			 => Asset::callStatic($className, 'about'),
+			'has_meta'		 => Asset::assetInfo($className, 'meta_description') !== 'off' && Asset::assetInfo($className, 'meta_keywords') !== 'off',
+			'status_equals'  => Asset::assetInfo($className, 'status_equals')
+		);
+	}
+
 	public static function getAssetList($grouped = false, $includeChildren = true)
 	{
 		$assets = array();
 		$datastoreAssets = config("datastore.assets");
 		foreach($datastoreAssets as $className){
+			$asset = self::getAssetItem($className);
 			if (Asset::assetNamespace($className) !== 'asset') {
 				throw new DatastoreException('Only assets of type assets should be used ' . $className);
 			}
 
-			$is_child = Asset::assetInfo($className, 'is_child');
-			if(!$includeChildren && $is_child){
+			if(!$includeChildren && $asset['is_child']){
 				continue;
 			}
 
-			$asset = array(
-				'class'			 => $className,
-				'name'			 => Asset::assetInfo($className, 'name'),
-				'name_singular'	 => Asset::assetInfo($className, 'name_singular'),
-				'shortname'	     => Asset::assetInfo($className, 'shortname'),
-				'icon'			 => Asset::assetInfo($className, 'icon'),
-				'children'		 => Asset::assetInfo($className, 'children'),
-				'is_child'		 => $is_child,
-				'max_instances'	 => Asset::assetInfo($className, 'max_instances'),
-				'about'			 => Asset::callStatic($className, 'about'),
-				'has_meta'		 => Asset::assetInfo($className, 'meta_description') !== 'off' && Asset::assetInfo($className, 'meta_keywords') !== 'off',
-				'status_equals'  => Asset::assetInfo($className, 'status_equals')
-			);
+
+			if($asset['children'] && $includeChildren && !in_array($asset['children'], $datastoreAssets)){
+				$child =  self::getAssetItem($asset['children']);
+				if (Asset::assetNamespace($child['class']) !== 'asset') {
+					throw new DatastoreException('Only assets of type assets should be used ' . $child['class']);
+				}
+
+				if ($grouped)
+				{
+					$mod			 = Asset::get_module($child['class']);
+					$assets[strtolower($mod)][strtolower($child['shortname'])]	 = $child;
+				}
+				else
+				{
+					$assets[strtolower($child['shortname'])] = $child;
+				}
+			}
+
 
 			if ($grouped)
 			{

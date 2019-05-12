@@ -389,6 +389,62 @@ $(document).on("click", 'a.remove-child', function () {
         return false;
     });
 
+	$(document).on("click", ".ams-upload-button, .ams-upload-filename", function() {
+		var target = $(this).data('target');
+		console.log(target, $(target), $(target).first());
+		$(target).trigger("click");
+	});
+
+	$(document).on('keydown', '.ams-upload-filename', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		return false;
+	})
+
+	$(document).on("change", ':file', function() {
+		var file = this.files[0];
+		var data = new FormData();
+		var target = $(this).attr('id') + '_file';
+		data.append("file", file);
+		data.append("_token" ,"{{ csrf_token() }}");
+
+		$.ajax({
+    // Your server script to process the upload
+    url: '{{ route('admin.ams.content.file') }}',
+    type: 'POST',
+
+    // Form data
+    data: data,
+
+    // Tell jQuery not to process data or worry about content-type
+    // You *must* include these options!
+    cache: false,
+    contentType: false,
+    processData: false,
+
+    // Custom XMLHttpRequest
+    xhr: function () {
+      var myXhr = $.ajaxSettings.xhr();
+      if (myXhr.upload) {
+        // For handling the progress of the upload
+        myXhr.upload.addEventListener('progress', function (e) {
+          if (e.lengthComputable) {
+            $('progress').attr({
+              value: e.loaded,
+              max: e.total,
+            });
+          }
+        }, false);
+      }
+      return myXhr;
+    },
+	success: function(res) {
+		$('#' + target).val(res.file);
+	}
+  });
+	});
+
+
 
 	</script>
 @endpush

@@ -22,6 +22,7 @@ return [
 			'created'	 => 'Created',
 			'updated'	 => 'Updated',
 			'status' => 'Status',
+			'link'	=> 'Page Link'
 		],
 		'assets' => [
 			'table' => [

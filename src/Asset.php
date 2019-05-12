@@ -10,6 +10,10 @@ use Phpsa\Datastore\Ams\HtmlAsset;
 use Phpsa\Datastore\Ams\TextAsset;
 use Phpsa\Datastore\Ams\DropdownAsset;
 use Phpsa\Datastore\Ams\MetatextAsset;
+use Phpsa\Datastore\Ams\BooleanAsset;
+use Phpsa\Datastore\Ams\FileAsset;
+use Phpsa\Datastore\Ams\ImageAsset;
+
 use Illuminate\Support\Facades\View;
 
 class Asset{
@@ -19,21 +23,22 @@ class Asset{
 	 */
 	const ASSET              = "asset";
 	const PROP               = "property";
+
 	const STRING             = StringAsset::class;
 	const TEXT               = TextAsset::class;
 	const HTML               = HtmlAsset::class;
-	const IMG                = "amsImageAsset";
-	const FILE               = "amsFileAsset";
+	const IMG                = ImageAsset::class;
+	const FILE               = FileAsset::class;
+	const BOOL               = BooleanAsset::class;
+	const DROPDOWN           = DropdownAsset::class;
+	const METATEXT			 = MetatextAsset::class;
 	const FOLDER             = "amsFolderAsset";
 	const HEADING            = "amsHeadingAsset";
-	const BOOL               = "amsBoolAsset";
 	const DATEPICKER         = "amsDatepickerAsset";
-	const DROPDOWN           = DropdownAsset::class;
 	const IDENTITY           = "amsIdentityAsset";
 	const AUTOCALLBACK       = "amsAutocallbackAsset";      // ajax powered autocomplete backed on a callback
 	const AUTOCALLBACKADDER  = "amsAutocallbackadderAsset"; // ajax powered autocomplete backed on a callback
 	const AUTOCOMPLETE       = "amsAutocompleteAsset";
-	const METATEXT			 = MetatextAsset::class;
 
 	public $help             = null;                        // help tips ypou may want to include
 	public $value_equals     = null;
@@ -315,7 +320,10 @@ class Asset{
 	 * @return void
 	 * @author Craig Smith <craig.smith@customd.com>
 	 */
-	public static function getPath($className){
+	public static function getPath($className = null){
+		if(null === $className) {
+			$className = get_called_class();
+		}
 		$mod = self::get_module($className);
 		$sn = self::assetInfo($className, 'shortname');
 		return !empty($mod) ? strtolower($mod .'.' . $sn) : strtolower($sn);

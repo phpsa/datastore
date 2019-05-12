@@ -119,7 +119,9 @@ Class Controller extends BaseController {
 		return ($asset->is_child || !$asset->id )? null : DatastorePages::where('asset', $asset->id)->first();
 	}
 
-	public function create($assetType){
+	public function create($assetType, Request $request){
+
+
 		$assetData = Helpers::parseAssetType($assetType, true);
 		$newAsset = Datastore::getAsset($assetData);
 
@@ -317,6 +319,13 @@ Class Controller extends BaseController {
 		return response()->json($exists ? "Slug already in use": true);
 
 
+	}
+
+	public function file(Request $request) {
+
+
+		$path = $request->file('file')->store('ams');
+		return response()->json(["file" => $path]);
 	}
 
 }

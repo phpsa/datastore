@@ -7,8 +7,7 @@
 			->select()
 			->options($data['options'])
 			->attribute('id', $data['key'])
-			->class('form-control')
-			->value(!empty($data['value']) ? $data['value'] : NULL);
+			->class('form-control');
 			if($data['required']){
 				$input = $input->required();
 			}
@@ -19,7 +18,7 @@
 			}
 			$name .= (isset($multiform) && $multiform) ? '[]' : '';?>
 
-			{{ $input->name($name) }}
+			{{ $input->name($name)->value(old($name, !empty($data['value']) ? $data['value'] : NULL)) }}
 
 			<?php if ($data['help']): ?>
 				<small class="help-block form-text text-muted"><?php echo $data['help']; ?></small>

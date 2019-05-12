@@ -6,7 +6,6 @@
 			<?php $input = html()
 			->textarea()
 			->attribute('rows', 5)
-			->value(!empty($data['value']) ? $data['value'] : NULL)
 			->attribute('cols', 40)
 			->attribute('id', $data['key'])
 			->class('form-control ams-htmleditor');
@@ -20,7 +19,7 @@
 			}
 			$name .= (isset($multiform) && $multiform) ? '[]' : '';?>
 
-			{{ $input->name($name) }}
+			{{ $input->name($name)->value(old($name, !empty($data['value']) ? $data['value'] : NULL)) }}
 
 			<?php if ($data['help']): ?>
 				<small class="help-block form-text text-muted"><?php echo $data['help']; ?></small>

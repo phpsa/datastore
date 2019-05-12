@@ -27,7 +27,8 @@ class ContentAsset extends Asset {
 		'status' => array(
             'name' => 'Published',
             'type' => self::DROPDOWN,
-            'options' => ['published' => 'Published', 'unpublished' => 'Unpublished']
+			'options' => ['published' => 'Published', 'unpublished' => 'Unpublished'],
+			'published' => ['published']
         ),
 	);
 

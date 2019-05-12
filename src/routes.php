@@ -13,6 +13,7 @@ $prefix = config("datastore.urlprefix");
 
 Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'admin.ams.', 'middleware' => ['admin',  'permission:manage datastore']], function () {
 	Route::get('ams/slug', [AdminController::class, 'slug'])->name('content.slug');
+	Route::post('ams/file', [AdminController::class, 'file'])->name('content.file');
 	Route::get('ams/inject', [AdminController::class, 'inject'])->name('content.inject');
 	Route::get('ams/list/{asset}', [AdminController::class, 'list'])->name('content.list');
 	Route::get('ams/create/{asset}', [AdminController::class, 'create'])->name('content.create');

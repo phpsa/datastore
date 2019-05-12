@@ -45,13 +45,13 @@ class Datastore{
 	 * if an id is passed populate the data
 	 * @param int $id
 	 */
-	protected function __construct($id = 0)
+	public function __construct($id = 0)
 	{
 
 		$this->id = $id;
 		if ($id)
 		{
-			$this->__model = DatastoreModel::find($id);
+			$this->__model = DatastoreModel::findOrFail($id);
 
 			if(!$this->__model){
 				//could not load <div class="">thr</div>
@@ -489,6 +489,7 @@ class Datastore{
 		$vars				 = $this->export();
 		$vars['_unique_id']	 = uniqid();
 
+
 		// we also want to know what asset this property belongs to
 		$output = Asset::callStatic($this->type, 'render', array($vars, $template));
 		if (!$output)
@@ -671,6 +672,7 @@ class Datastore{
 			$unique_id = md5(uniqid(rand(), true));
 		}
 
+
 		foreach ($this->__asset_properties as $prop => $each)
 		{
 			if (isset($this->__asset_properties[$prop]['temp']))
@@ -715,7 +717,7 @@ class Datastore{
 			if ($this->meta_description !== 'off')
 			{
 				$data = array(
-					'label'		 => 'Meta-Description',
+					'name'		 => 'Meta-Description',
 					'key'		 => 'meta_description',
 					'help'	 => 'You can associate a Meta-Description with this content. No more than 155 characters is considered optimal',
 					'value'		 => $this->meta_description
@@ -727,7 +729,7 @@ class Datastore{
 			if ($this->meta_keywords !== 'off' /* &&  CONFIG->get('settings.allow_meta_keywords' ) */)
 			{
 				$data = array(
-					'label'		 => 'Meta-Keywords',
+					'name'		 => 'Meta-Keywords',
 					'key'		 => 'meta_keywords',
 					'help'	 => 'You can associate Meta-Keywords with this content, with each keyword or key-phrase being seperated by a comma. <br/><b>Note :</b> There is evidence that suggests Keywords can hurt your SEO Ranking',
 					'value'		 => $this->meta_keywords
@@ -756,7 +758,7 @@ class Datastore{
 			if ($this->page_css !== 'off')
 			{
 				$data = array(
-					'label'		 => 'Custom CSS',
+					'name'		 => 'Custom CSS',
 					'key'		 => 'page_css',
 					'help'	 	 => 'Custom css rules for this page display', // 'You can associate a Meta-Description with this content. No more than 155 characters is considered optimal',
 					'value'		 => $this->page_css
@@ -768,7 +770,7 @@ class Datastore{
 			if ($this->page_js !== 'off' )
 			{
 				$data = array(
-					'label'		 => 'Custom JS',
+					'name'		 => 'Custom JS',
 					'key'		 => 'page_js',
 					'help'	 	 => 'custom javascript for this page display', // 'You can associate Meta-Keywords with this content, with each keyword or key-phrase being seperated by a comma. <br/><b>Note :</b> There is evidence that suggests Keywords can hurt your SEO Ranking',
 					'value'		 => $this->page_js
@@ -891,8 +893,7 @@ class Datastore{
 							'children'		 => Asset::assetInfo($classname, 'children'),
 							'is_child'		 => Asset::assetInfo($classname, 'is_child'),
 							'max_instances'	 => Asset::assetInfo($classname, 'max_instances'),
-							'about'			 => Asset::callStatic($classname, 'about'),
-							'path'			 => self::urlPath($classname)
+							'about'			 => Asset::callStatic($classname, 'about')
 						);
 
 
@@ -1053,6 +1054,23 @@ class Datastore{
 		 }
 	}
 
+	public function statusActive(){
+		if($this->__status_equals){
+
+			if(!isset($this->__asset->properties[$this->__status_equals]['published'])){
+				throw new DatastoreException("Statused assests need a published option in the asset definition");
+			}
+
+			$activeOptions = $this->__asset->properties[$this->__status_equals]['published'];
+
+			return is_array($activeOptions) ? in_array($this->status, $activeOptions) : $activeOptions === $this->status;
+
+		}
+		return true;
+	}
+
+
+
 	public static function image_url($image_id)
 	{
 		return Storage::url('file.jpg');
@@ -1075,6 +1093,10 @@ class Datastore{
 
 	public function urlPath(){
 		return Asset::getPath($this->type);
+	}
+
+	public function getViewName($prefix = 'frontend.ams'){
+		return $this->__asset::getFilename($prefix);
 	}
 
 }
