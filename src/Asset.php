@@ -329,4 +329,14 @@ class Asset{
 		return !empty($mod) ? strtolower($mod .'.' . $sn) : strtolower($sn);
 	}
 
+	/**
+	 * generate the route for this asset
+	 */
+	public static function route($record, $path = null){
+		if(null === $path){
+			$path = 'frontend.ams.page.id.slug';
+		}
+		$page = $record->page;
+		return route($path, ['slug' => $page->slug, 'id' => $page->id]);
+	}
 }

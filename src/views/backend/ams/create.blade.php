@@ -37,7 +37,7 @@
 								<?php if ($children): ?>
 
 									<li class="nav-item ">
-											<a class="nav-link" id="{{$children['path']}}-child-tab" data-toggle="tab"  href="#{{$children['path']}}-child" role="tab" aria-controls="<?php echo $children['path']; ?>-child" aria-selected="false">{{ $children['name'] }}</a>
+											<a class="nav-link" id="{{ Str::slug($children['path']) }}-child-tab" data-toggle="tab"  href="#{{ Str::slug($children['path']) }}-child" role="tab" aria-controls="<?php echo  Str::slug($children['path']) ; ?>-child" aria-selected="false">{{ $children['name'] }}</a>
 									</li>
 
 								<?php endif; ?>
@@ -100,13 +100,13 @@
 
 									<?php if ($children): ?>
 
-										<div class="tab-pane fade" id="{{$children['path']}}-child" role="tabpanel" aria-labelledby="{{$children['path']}}-child-tab">
+										<div class="tab-pane fade" id="{{ Str::slug($children['path']) }}-child" role="tabpanel" aria-labelledby="{{ Str::slug($children['path']) }}-child-tab">
 											<div class="row">
 												<div class="col-md-12">
 														<h6 class="mb-4">{{ $children['name'] }}<small> - @lang('phpsa-datastore::backend.labels.tabs.label.createmodifyasset')</small>
 
 															<div class="btn-toolbar float-right" role="toolbar" aria-label="@lang('labels.general.toolbar_btn_groups')">
-																	<a id="addChild" href="#" class="btn btn-success ml-1" data-toggle="tooltip" title="Add <?php echo ucwords($children['path']); ?>"><i class="fas fa-plus-circle"></i></a>
+																	<a id="addChild" href="#" class="btn btn-success ml-1" data-toggle="tooltip" title="Add <?php echo ucwords($children['name']); ?>"><i class="fas fa-plus-circle"></i></a>
 																</div><!--btn-toolbar-->
 
 															</h6>
@@ -115,7 +115,7 @@
 												<div class="col-2">
 														<div id="child-pills" class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 															<?php foreach ($children['kids'] as $idx => $child): ?>
-																<a data-count="{{ $idx + 1 }}" class="child-tab nav-link<?php echo $idx === 0 ? ' active' : ''; ?>" id="v-pills-{{ $idx }}-tab" data-toggle="pill" href="#v-pills-{{ $idx }}" role="tab" aria-controls="v-pills-{{ $idx }}" aria-selected="true" data-type="<?php echo $children['path']; ?>" data-count="<?php echo ($idx + 1); ?>" data-label="<?php echo ucwords($children['path']); ?>"><?php echo ucwords($children['path']) . ' ' . ($idx + 1); ?></a>
+																<a data-count="{{ $idx + 1 }}" class="child-tab nav-link<?php echo $idx === 0 ? ' active' : ''; ?>" id="v-pills-{{ $idx }}-tab" data-toggle="pill" href="#v-pills-{{ $idx }}" role="tab" aria-controls="v-pills-{{ $idx }}" aria-selected="true" data-type="<?php echo $children['path']; ?>" data-count="<?php echo ($idx + 1); ?>" data-label="<?php echo ucwords($children['name']); ?>"><?php echo ucwords($children['name']) . ' ' . ($idx + 1); ?></a>
 															<?php endforeach; ?>
 
 
@@ -128,7 +128,7 @@
 																<?php foreach ($children['kids'] as $idx => $child): ?>
 																	<div class="child-tab-pane tab-pane fade<?php echo $idx == 0 ? ' show active' : '';?>" id="v-pills-{{ $idx }}" role="tabpanel" aria-labelledby="v-{{ $idx }}-home-tab">
 																			<fieldset>
-																					<h6><span><?php echo ucwords($children['path']) . ' ' . ($idx + 1); ?></span>
+																					<h6><span><?php echo ucwords($children['name']) . ' ' . ($idx + 1); ?></span>
 																						<div class="btn-toolbar float-right" role="toolbar" aria-label="@lang('labels.general.toolbar_btn_groups')">
 																						<a <?php echo (count($children['kids']) < 2) ? 'style="display:none;" ' : ''; ?>class="remove-child btn btn-danger" data-target="#v-pills-{{ $idx }}" data-count="<?php echo $idx + 1; ?>">Remove <?php echo ucwords($children['path']) . ' ' . ($idx + 1); ?></a>
 																						</div>

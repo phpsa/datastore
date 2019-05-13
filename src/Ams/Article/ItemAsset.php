@@ -39,6 +39,14 @@ class ItemAsset extends Asset {
 
 
 
+		/**
+	 * generate the route for this asset
+	 */
+	public static function route($record, $path = null){
+		$page = $record->page;
+
+		return $path ? route('frontend.ams.articles.article', ['slug' => $page->slug, 'path' => $path]) : route('frontend.ams.article.article', ['slug' => $page->slug]);
+	}
 
 }
 

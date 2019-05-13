@@ -3,8 +3,7 @@
 
 use  Phpsa\Datastore\Http\Controllers\Admin\Controller as AdminController;
 use  Phpsa\Datastore\Http\Controllers\DatastoreController;
-
-use App\Http\Controllers\Frontend\ContactController;
+use  Phpsa\Datastore\Http\Controllers\CommentsController;
 
 
 //Route::get('datastore_tests', [PageController::class, 'tests'])->name('dstests');
@@ -26,6 +25,11 @@ Route::group(['namespace' => 'Frontend', 'as' => 'frontend.ams.', 'prefix' => $p
 	Route::get('{slug}', [DatastoreController::class, 'page'])->name('page.slug');
 	Route::get('{id}', [DatastoreController::class, 'pageById'])->name('page.id');
 	Route::get('{id}/{slug}', [DatastoreController::class, 'pageById'])->name('page.id.slug');
+	Route::get('articles/{slug}', [DatastoreController::class, 'articleCategory'])->name('article.category');
+	Route::get('article/{category_slug}/{slug}', [DatastoreController::class, 'articleCategoryItem'])->name('articles.article');
+	Route::get('article/{slug}', [DatastoreController::class, 'articleItem'])->name('article.article');
+
+	Route::post('comments', [CommentsController::class, 'store'])->name('comments.store');
 });
 
 

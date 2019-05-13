@@ -14,7 +14,7 @@ use Phpsa\Datastore\Models\DatastoreDatastore;
 use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 Class Controller extends BaseController {
@@ -324,7 +324,8 @@ Class Controller extends BaseController {
 	public function file(Request $request) {
 
 
-		$path = $request->file('file')->store('ams');
+		$path = Storage::putFile('public', $request->file('file'), 'public');
+		//$path = $request->file('file')->store('ams');
 		return response()->json(["file" => $path]);
 	}
 

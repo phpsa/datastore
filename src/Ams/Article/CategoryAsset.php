@@ -35,6 +35,13 @@ class CategoryAsset extends Asset {
 			Assigning Article Items to such a category makes them easier to manage and maintain, and also
 			makes it easier for your audience to find them.';
 	}
-}
 
-?>
+
+	/**
+	 * generate the route for this asset
+	 */
+	public static function route($record, $path = null){
+		$page = $record->page;
+		return route('frontend.ams.article.category', ['slug' => $page->slug]);
+	}
+}

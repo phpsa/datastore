@@ -1099,4 +1099,8 @@ class Datastore{
 		return $this->__asset::getFilename($prefix);
 	}
 
+	public function __get($name){
+		return $this->__model->{$name};
+	}
+
 }

@@ -9,6 +9,7 @@ class ContentAsset extends Asset {
 	public $shortname = 'Content';
 	public $is_child = false;
 
+
 	public $value_equals = 'title';
     public $status_equals = 'status';
 
@@ -35,5 +36,16 @@ class ContentAsset extends Asset {
 	public static function about() {
 		return 'A basic content asset, allows for a title and some html content';
 	}
+
+			/**
+	 * generate the route for this asset
+	 */
+	public static function route($record, $path = null){
+
+		$path = 'frontend.ams.page.slug';
+		$page = $record->page;
+		return route($path, ['slug' => $page->slug]);
+	}
+
 
 }

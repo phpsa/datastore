@@ -51,7 +51,7 @@
 								@if($asset['has_meta'])
 								<td>
 									@if($contentItem->page)
-									<a href="{{ route('frontend.ams.page.id.slug', ['slug' => $contentItem->page->slug, 'id' => $contentItem->page->id]) }}" target="_blank">{{ route('frontend.ams.page.id.slug', ['slug' => $contentItem->page->slug, 'id' => $contentItem->page->id]) }}</a>
+									<a href="{{ $contentItem->route }}" target="_blank">{{ $contentItem->route }}</a>
 									@endif
 								</td>
 								@endif

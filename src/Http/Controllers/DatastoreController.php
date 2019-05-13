@@ -31,13 +31,8 @@ Class DatastoreController extends Controller {
 
 	public function page($slug){
 
-	}
 
-
-
-	public function pageById($id, $slug){
-
-		$page = DatastorePages::where('slug', $slug)->where('id', $id)->first();
+		$page = DatastorePages::where('slug', $slug)->first();
 		if(!$page){
 			abort(404);
 		}
