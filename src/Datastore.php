@@ -23,7 +23,6 @@ class Datastore{
 	protected $__start_date			 = null;
 	protected $__end_date			 = null;
 
-
 	/**
 	 *
 	 * @var DatastoreModel
@@ -74,7 +73,7 @@ class Datastore{
 			{
 				foreach ($stores as $ds)
 				{
-					$this->ownDatastore[] = self::get($ds->id);
+					$this->ownDatastore[] = self::getAssetById($ds->id);
 				}
 			}
 		}else{
@@ -83,20 +82,13 @@ class Datastore{
 	}
 
 	/**
-	 * Dispense a new asset
+	 * Gets an existing asset by ID
 	 *
-	 * @param Phpsa\Datastore\Asset and instance of
+	 * @param [type] $id
 	 *
 	 * @return void
-	 * @author Craig Smith <craig.smith@customd.com>
 	 */
-	public static function dispense($type){
-		$datastore = new self();
-		$datastore->setAssetType($type);
-		return $datastore;
-	}
-
-	public static function get($id){
+	public static function getAssetById($id){
 		$datastore = new self($id);
 		$datastore->setAssetType($datastore->type);
 		return $datastore;
@@ -705,6 +697,12 @@ class Datastore{
 		return $output;
 	}
 
+	public function hasMetadataForm(){
+		if ($this->namespace == 'asset' && !$this->is_child){
+			return ($this->meta_description !== 'off' || $this->meta_keywords !== 'off');
+		}
+		return false;
+	}
 
 	/**
 	 *  gets the form necessary for building the meta data
@@ -745,6 +743,13 @@ class Datastore{
 			return null;
 		}
 		return $output;
+	}
+
+	public function hasDeveloperForm(){
+		if ($this->namespace == 'asset' && !$this->is_child){
+			return ($this->page_js !== 'off' || $this->page_css !== 'off');
+		}
+		return false;
 	}
 
 	/**
@@ -813,7 +818,6 @@ class Datastore{
 
 		}
 
-//@TODO MAP TO: https://laravel.com/docs/5.4/validation
 		if ($config)
 		{
 			$validator = Validator::make($request, $config, $messages);
@@ -853,55 +857,6 @@ class Datastore{
 		}
 		return $return;
 	}
-
-	/**
-	 * Retrieves available assets
-	 * @param boolean $grouped
-	 * @return array
-	 * @TODO :: Need a better way of handling these
-	 * @Most likely from an config in the datastore config fodler / database table with datastore types!?
-	 */
-	public static function findAssets($grouped = false)
-	{
-
-		$paths = [];
-		foreach ($paths as $path)
-		{
-			$files = glob_recursive($path . 'asset/*');
-			if ($files)
-			{
-				foreach ($files as $asset)
-				{
-					$classname = Helpers::getClassnameFromPath($asset);
-					if (!$classname)
-					{
-						continue;
-					}
-
-					if (Helpers::assetNamespace($classname) == 'asset')
-					{
-
-						$asset = Helpers::getAssetItem($classname);
-
-						if ($grouped)
-						{
-							$mod			 = Helpers::getModule($classname);
-							$assets[$mod][]	 = $asset;
-						}
-						else
-						{
-							$assets[] = $asset;
-						}
-					}
-				}
-			}
-		}
-		return $assets;
-	}
-
-
-
-
 
 	/**
 	 * does this datastore have this property?

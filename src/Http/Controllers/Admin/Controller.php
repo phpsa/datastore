@@ -146,7 +146,7 @@ Class Controller extends BaseController {
 
 	public function edit($assetType, $id){
 
-		$asset = Datastore::get($id);
+		$asset = Datastore::getAssetById($id);
 
 
 		$children = $this->_getKids($asset);
@@ -187,12 +187,12 @@ Class Controller extends BaseController {
 				{
 					if ($a['id'])
 					{
-						$nnasset = Datastore::get($id);
+						$nnasset = Datastore::getAssetById($id);
 						if ($nnasset->ownDatastore())
 						{
 							foreach ($nnasset->ownDatastore() as $e)
 							{
-								Datastore::get($e->id);
+								Datastore::getAssetById($e->id);
 							}
 						}
 						$nnasset->delete();

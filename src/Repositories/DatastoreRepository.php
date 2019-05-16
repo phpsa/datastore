@@ -26,7 +26,7 @@ class DatastoreRepository extends BaseRepository
 
 
 		$models->transform(function ($item, $key) {
-			return Datastore::get($item->id);
+			return Datastore::getAssetById($item->id);
 		});
 
 		return $models;

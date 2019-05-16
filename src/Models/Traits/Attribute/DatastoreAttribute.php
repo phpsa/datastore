@@ -2,7 +2,7 @@
 
 namespace Phpsa\Datastore\Models\Traits\Attribute;
 
-use Phpsa\Datastore\Asset;
+use Phpsa\Datastore\Helpers;
 
 /**
  * Trait UserAttribute.

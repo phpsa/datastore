@@ -62,7 +62,7 @@ Class DatastoreController extends Controller {
 		// echo '<pre>';
 		// print_r($assets);
 		// exit;
-		$tester = Datastore::dispense(ContentAsset::class);
+		$tester = Datastore::getAsset(ContentAsset::class);
 
 		$tester->prop('title', 'Moe Title');
         $tester->prop('content', '<p>Rhoncus hac aliquam aliquam! Et mauris, et quis platea ut elementum natoque sit natoque lectus augue integer aliquam porta rhoncus nec, cursus diam a parturient augue ut! Tincidunt eros urna lacus lorem, sit scelerisque. Proin duis auctor ut. Turpis? Sed, diam elit sed velit dapibus phasellus, pulvinar mattis! Sociis augue in parturient sed ultricies et.</p>');
@@ -77,7 +77,7 @@ Class DatastoreController extends Controller {
 		echo '<pre>$tester->export(): '; print_r($tester->export()); echo '</pre>'; die();
 
 
-		/*$tester = Datastore::get(11);
+		/*$tester = Datastore::getAssetById(11);
 		echo $tester->render('title');
 
 		echo $tester->form('title');
@@ -90,7 +90,7 @@ Class DatastoreController extends Controller {
 		print_r($tester->getFieldValues());*/
 
 		/*
-		$tester = Datastore::dispense(ContentAsset::class);
+		$tester = Datastore::getAsset(ContentAsset::class);
 
         $tester->prop('content', '<p>Rhoncus hac aliquam aliquam! Et mauris, et quis platea ut elementum natoque sit natoque lectus augue integer aliquam porta rhoncus nec, cursus diam a parturient augue ut! Tincidunt eros urna lacus lorem, sit scelerisque. Proin duis auctor ut. Turpis? Sed, diam elit sed velit dapibus phasellus, pulvinar mattis! Sociis augue in parturient sed ultricies et.</p>');
 		$tester->prop('status', 'published');

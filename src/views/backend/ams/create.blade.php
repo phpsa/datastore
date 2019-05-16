@@ -45,12 +45,14 @@
 
 								<?php  if (!$asset->private): ?>
 									<li class="nav-item">
-											<a class="nav-link" id="seo-tab" data-toggle="tab" href="#seo" role="tab" aria-controls="seo" aria-selected="false">@lang('phpsa-datastore::backend.labels.tabs.seo')</a>
-										</li>
-									<li class="nav-item">
-										<a class="nav-link" id="cssjs-tab" data-toggle="tab" href="#cssjs" role="tab" aria-controls="cssjs" aria-selected="false">@lang('phpsa-datastore::backend.labels.tabs.cssjs')</a>
+										<a class="nav-link" id="seo-tab" data-toggle="tab" href="#seo" role="tab" aria-controls="seo" aria-selected="false">@lang('phpsa-datastore::backend.labels.tabs.seo')</a>
 									</li>
 								<?php endif ;?>
+								<?php  if($asset->hasDeveloperForm()) :?>
+								<li class="nav-item">
+									<a class="nav-link" id="cssjs-tab" data-toggle="tab" href="#cssjs" role="tab" aria-controls="cssjs" aria-selected="false">@lang('phpsa-datastore::backend.labels.tabs.cssjs')</a>
+								</li>
+							<?php endif; ?>
 							</ul>
 
 							<div class="tab-content tab-validate" id="amsTabContent">
@@ -202,7 +204,7 @@
 															</div>
 														</div>
 												</fieldset>
-												<?php  if ($asset->getMetadataForm()): ?>
+												<?php  if ($asset->hasMetadataForm()): ?>
 												<fieldset>
 														<h6>@lang('phpsa-datastore::backend.labels.tabs.seo')<small> - @lang('phpsa-datastore::backend.labels.tabs.label.createmodifyseometa')</small></h6>
 														<hr />
@@ -211,10 +213,13 @@
 											<?php endif; ?>
 
 									</div>
+
+								<?php endif; ?>
+								<?php  if($asset->hasDeveloperForm()) :?>
 									<div class="tab-pane fade" id="cssjs" role="tabpanel" aria-labelledby="cssjs-tab">
-											<fieldset>
-													<h6>@lang('phpsa-datastore::backend.labels.tabs.cssjs')<small> - @lang('phpsa-datastore::backend.labels.tabs.label.createmodifycssjs')</small></h6>
-													<hr />
+										<fieldset>
+												<h6>@lang('phpsa-datastore::backend.labels.tabs.cssjs')<small> - @lang('phpsa-datastore::backend.labels.tabs.label.createmodifycssjs')</small></h6>
+												<hr />
 											{!! $asset->getDeveloperForm() !!}
 										</fieldset>
 									</div>

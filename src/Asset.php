@@ -10,6 +10,7 @@ use Phpsa\Datastore\DatastoreException;
 use Phpsa\Datastore\Ams\BooleanAsset;
 use Phpsa\Datastore\Ams\DropdownAsset;
 use Phpsa\Datastore\Ams\FileAsset;
+use Phpsa\Datastore\Ams\HeadingAsset;
 use Phpsa\Datastore\Ams\HtmlAsset;
 use Phpsa\Datastore\Ams\ImageAsset;
 use Phpsa\Datastore\Ams\MetatextAsset;
@@ -37,9 +38,9 @@ class Asset{
 	const METATEXT			 = MetatextAsset::class;
 	const STRING             = StringAsset::class;
 	const TEXT               = TextAsset::class;
+	const HEADING            = HeadingAsset::class;
 
 	const FOLDER             = "amsFolderAsset";
-	const HEADING            = "amsHeadingAsset";
 	const DATEPICKER         = "amsDatepickerAsset";
 	const IDENTITY           = "amsIdentityAsset";
 	const AUTOCALLBACK       = "amsAutocallbackAsset";      // ajax powered autocomplete backed on a callback
