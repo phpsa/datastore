@@ -43,7 +43,7 @@
 								<?php endif; ?>
 
 
-								<?php  if ($asset->getMetadataForm()): ?>
+								<?php  if (!$asset->private): ?>
 									<li class="nav-item">
 											<a class="nav-link" id="seo-tab" data-toggle="tab" href="#seo" role="tab" aria-controls="seo" aria-selected="false">@lang('phpsa-datastore::backend.labels.tabs.seo')</a>
 										</li>
@@ -155,7 +155,8 @@
 									<?php endif; ?>
 
 
-									<?php  if ($asset->getMetadataForm()): ?>
+
+									<?php  if (!$asset->private): ?>
 									<div class="tab-pane fade" id="seo" role="tabpanel" aria-labelledby="seo-tab">
 											<fieldset>
 													<h6>@lang('phpsa-datastore::backend.labels.tabs.page')<small> - @lang('phpsa-datastore::backend.labels.tabs.label.createmodifyseo')</small></h6>
@@ -201,11 +202,13 @@
 															</div>
 														</div>
 												</fieldset>
+												<?php  if ($asset->getMetadataForm()): ?>
 												<fieldset>
 														<h6>@lang('phpsa-datastore::backend.labels.tabs.seo')<small> - @lang('phpsa-datastore::backend.labels.tabs.label.createmodifyseometa')</small></h6>
 														<hr />
 														{!! $asset->getMetadataForm() !!}
 												</fieldset>
+											<?php endif; ?>
 
 									</div>
 									<div class="tab-pane fade" id="cssjs" role="tabpanel" aria-labelledby="cssjs-tab">

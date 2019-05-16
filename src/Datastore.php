@@ -1,5 +1,7 @@
 <?php
 
+// @todo - move this to a smaller instance and move more of the logic to the Model itself
+
 namespace Phpsa\Datastore;
 
 use Phpsa\Datastore\Models\Datastore as DatastoreModel;
@@ -156,7 +158,7 @@ class Datastore{
 		}
 		$this->type = $type;
 
-		$this->module = Asset::get_module($type);
+		$this->module = Helpers::getModule($type);
 
 		$this->setInternals();
 
@@ -249,7 +251,7 @@ class Datastore{
 	 */
 	public static function getKey($string)
 	{
-		$new	 = Asset::_splitByCaps($string);
+		$new	 = Helpers::splitByCaps($string);
 		$explode = explode(' ', $new);
 
 		if (isset($explode[0]) && $explode[0] == 'Ams')
@@ -316,7 +318,7 @@ class Datastore{
 
 						if ($this->__value_equals && $this->__value_equals == $prop)
 						{
-							$this->val(Asset::callStatic($this->type, 'valueEquals', array($val)));
+							$this->val(Helpers::callStatic($this->type, 'valueEquals', array($val)));
 						}
 						else if ($this->__status_equals && $this->__status_equals == $prop)
 						{
@@ -337,7 +339,7 @@ class Datastore{
 						// if value equals is set, set it too
 						if ($this->__value_equals && $this->__value_equals == $prop)
 						{
-							$this->val(Asset::callStatic($this->type, 'valueEquals', array($val)));
+							$this->val(Helpers::callStatic($this->type, 'valueEquals', array($val)));
 						}
 						else if ($this->__status_equals && $this->__status_equals == $prop)
 						{
@@ -491,7 +493,7 @@ class Datastore{
 
 
 		// we also want to know what asset this property belongs to
-		$output = Asset::callStatic($this->type, 'render', array($vars, $template));
+		$output = Helpers::callStatic($this->type, 'render', array($vars, $template));
 		if (!$output)
 		{
 			return null;
@@ -645,7 +647,7 @@ class Datastore{
 
 
 		// we also want to know what asset this property belongs to
-		$output = Asset::callStatic($this->type, 'form', array($vars, $template));
+		$output = Helpers::callStatic($this->type, 'form', array($vars, $template));
 		if (!$output)
 		{
 			return null;
@@ -680,7 +682,7 @@ class Datastore{
 				$xvars				 = $this->__asset_properties[$prop]['temp']->export();
 				$xvars['unique_id']	 = $unique_id;
 
-				$output .= Asset::callStatic($this->__asset_properties[$prop]['temp']->type, 'form', array($xvars, $this->type));
+				$output .= Helpers::callStatic($this->__asset_properties[$prop]['temp']->type, 'form', array($xvars, $this->type));
 			}
 			else
 			{
@@ -689,7 +691,7 @@ class Datastore{
 					$xvars				 = $this->ownDatastore[$this->__asset_properties[$prop]]->export();
 					$xvars['unique_id']	 = $unique_id;
 
-					$output .= Asset::callStatic($this->ownDatastore[$this->__asset_properties[$prop]]->type, 'form', array($xvars, $this->type));
+					$output .= Helpers::callStatic($this->ownDatastore[$this->__asset_properties[$prop]]->type, 'form', array($xvars, $this->type));
 				}
 			}
 		}
@@ -723,7 +725,7 @@ class Datastore{
 					'value'		 => $this->meta_description
 				);
 
-				$output .= Asset::callStatic(ASSET::METATEXT, 'form', array($data, 'metatext'));
+				$output .= Helpers::callStatic(ASSET::METATEXT, 'form', array($data, 'metatext'));
 			}
 
 			if ($this->meta_keywords !== 'off' /* &&  CONFIG->get('settings.allow_meta_keywords' ) */)
@@ -735,7 +737,7 @@ class Datastore{
 					'value'		 => $this->meta_keywords
 				);
 
-				$output .= Asset::callStatic(ASSET::METATEXT, 'form', array($data, 'metatext'));
+				$output .= Helpers::callStatic(ASSET::METATEXT, 'form', array($data, 'metatext'));
 			}
 		}
 		if (!$output)
@@ -764,7 +766,7 @@ class Datastore{
 					'value'		 => $this->page_css
 				);
 
-				$output .= Asset::callStatic(ASSET::METATEXT, 'form', array($data, 'metatext'));
+				$output .= Helpers::callStatic(ASSET::METATEXT, 'form', array($data, 'metatext'));
 			}
 
 			if ($this->page_js !== 'off' )
@@ -776,7 +778,7 @@ class Datastore{
 					'value'		 => $this->page_js
 				);
 
-				$output .= Asset::callStatic(ASSET::METATEXT, 'form', array($data, 'metatext'));
+				$output .= Helpers::callStatic(ASSET::METATEXT, 'form', array($data, 'metatext'));
 			}
 		}
 		if (!$output)
@@ -861,12 +863,7 @@ class Datastore{
 	 */
 	public static function findAssets($grouped = false)
 	{
-		/*get_instance()->load->helper('file_helper');
-		$active	 = array();
-		$modules = get_instance()->config->item('modules');
 
-		$paths = get_instance()->load->get_package_paths();
-		*/
 		$paths = [];
 		foreach ($paths as $path)
 		{
@@ -875,32 +872,20 @@ class Datastore{
 			{
 				foreach ($files as $asset)
 				{
-					$classname = self::getClassnameFromPath($asset);
+					$classname = Helpers::getClassnameFromPath($asset);
 					if (!$classname)
 					{
 						continue;
 					}
 
-					if (Asset::assetNamespace($classname) == 'asset')
+					if (Helpers::assetNamespace($classname) == 'asset')
 					{
 
-						$asset = array(
-							'class'			 => $classname,
-							'name'			 => Asset::assetInfo($classname, 'name'),
-							'name_singular'	 => Asset::assetInfo($classname, 'name_singular'),
-							'shortname'	     => Asset::assetInfo($classname, 'shortname'),
-							'icon'			 => Asset::assetInfo($classname, 'icon'),
-							'children'		 => Asset::assetInfo($classname, 'children'),
-							'is_child'		 => Asset::assetInfo($classname, 'is_child'),
-							'max_instances'	 => Asset::assetInfo($classname, 'max_instances'),
-							'about'			 => Asset::callStatic($classname, 'about')
-						);
-
-
+						$asset = Helpers::getAssetItem($classname);
 
 						if ($grouped)
 						{
-							$mod			 = Asset::get_module($classname);
+							$mod			 = Helpers::getModule($classname);
 							$assets[$mod][]	 = $asset;
 						}
 						else
@@ -915,48 +900,7 @@ class Datastore{
 	}
 
 
-	/**
-	 * gets the classname from the path of the file
-	 * @param string $file
-	 * @return string
-	 */
-	protected static function getClassnameFromPath($file)
-	{
-		if (!is_file(FCPATH . $file))
-		{
-			return false;
-		}
-		$fp = fopen(FCPATH . $file, 'r');
 
-		$class	 = $buffer	 = '';
-		$i		 = 0;
-		while (!$class)
-		{
-			if (feof($fp))
-				break;
-
-			$buffer	 .= fread($fp, 512);
-			$tokens	 = token_get_all($buffer);
-
-			if (strpos($buffer, '{') === false)
-				continue;
-
-			for (; $i < count($tokens); $i++)
-			{
-				if ($tokens[$i][0] === T_CLASS)
-				{
-					for ($j = $i + 1; $j < count($tokens); $j++)
-					{
-						if ($tokens[$j] === '{')
-						{
-							$class = $tokens[$i + 2][1];
-						}
-					}
-				}
-			}
-		}
-		return $class;
-	}
 
 
 	/**
@@ -1028,15 +972,30 @@ class Datastore{
 		return $this;
 	}
 
+	/**
+	 * gets the avaialble status options
+	 *
+	 * @return void
+	 */
 	public function statusOptions(){
 		return ($this->__status_equals) ? $this->__asset_properties[$this->__status_equals]['temp']->options : false;
 	}
 
+	/**
+	 * Gets the readable version of the status
+	 *
+	 * @return void
+	 */
 	public function getStatusValue(){
 		$options = $this->statusOptions();
 		return ($options && Helpers::isAssocArray($options) && isset($options[$this->status])) ? $options[$this->status] : $this->status;
 	}
 
+	/**
+	 * Get / set the current status value
+	 *
+	 * @return void
+	 */
 	public function status()
 	{
 		$num_args = func_num_args();
@@ -1045,7 +1004,7 @@ class Datastore{
 		 {
 			case 0:
 				// return all props as beans
-				return $this->status;
+				return $this->status();
 				break;
 
 			default:
@@ -1054,7 +1013,12 @@ class Datastore{
 		 }
 	}
 
-	public function statusActive(){
+	/**
+	 * Checks to see if the current asset is actaully active
+	 *
+	 * @return bool
+	 */
+	public function statusIsActive(){
 		if($this->__status_equals){
 
 			if(!isset($this->__asset->properties[$this->__status_equals]['published'])){
@@ -1070,7 +1034,14 @@ class Datastore{
 	}
 
 
-
+	/**
+	 * gets the url for the image.
+	 * @deprecated ???
+	 * @todo - perhaps can be used based on record or moved better place ?
+	 * @param [type] $image_id
+	 *
+	 * @return void
+	 */
 	public static function image_url($image_id)
 	{
 		return Storage::url('file.jpg');
@@ -1082,6 +1053,14 @@ class Datastore{
 		// return ($image) ? $image->url() : 'assets/modules/blog/images/feature-placeholder.png';
 	}
 
+	/**
+	 * Gets an asset by type and value
+	 *
+	 * @param [type] $type
+	 * @param [type] $value
+	 * @deprecated ???
+	 * @return void
+	 */
 	public static function getAssetByTypeValue($type,$value)
 	{
 		$asset = DatastoreModel::where('type' , $type)->where('value', $value)->where('namespace', 'asset')->orderBy('modified', 'desc')->first();
@@ -1091,14 +1070,33 @@ class Datastore{
 		return false;
 	}
 
+	/**
+	 * Gets the url path for the current type
+	 *
+	 * @return void
+	 */
 	public function urlPath(){
-		return Asset::getPath($this->type);
+		return Helpers::getPath($this->type);
 	}
 
+	/**
+	 * Gets our view name
+	 *
+	 * @param string $prefix
+	 *
+	 * @return void
+	 */
 	public function getViewName($prefix = 'frontend.ams'){
 		return $this->__asset::getFilename($prefix);
 	}
 
+	/**
+	 * Magic method to get from teh model if we not included it already
+	 *
+	 * @param [type] $name
+	 *
+	 * @return void
+	 */
 	public function __get($name){
 		return $this->__model->{$name};
 	}

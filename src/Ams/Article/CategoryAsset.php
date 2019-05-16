@@ -2,14 +2,13 @@
 
 namespace Phpsa\Datastore\Ams\Article;
 use Phpsa\Datastore\Asset;
-
-
+use Phpsa\Datastore\Ams\Article\ItemAsset;
 class CategoryAsset extends Asset {
 
 	public $name = 'Article Category';
 	public $shortname = 'ArticleCategory';
 	/* assets that can be children, a value means it is limited to that many children, -1 means unlimited  */
-	public $accept = "Phpsa\Datastore\Ams\Article\ItemAsset";
+	public $accept = ItemAsset::class;
 	public $accept_limit = "-1";
 
 	// map our value as equal to whatever the title property is set on save.

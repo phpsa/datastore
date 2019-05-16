@@ -10,6 +10,7 @@ class RobotsTxtAsset extends Asset{
 	public $shortname = 'robots_txt';
 	public $max_instances = 1;
 
+	public $private = true; //this is not a standard public facing page!
 
 	public $meta_description = 'off'; // set to 'off' to turn it off
 	public $meta_keywords	 = 'off'; // set to 'off' to turn it off

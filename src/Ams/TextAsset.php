@@ -4,7 +4,7 @@ use Phpsa\Datastore\Asset;
 
 class TextAsset extends Asset {
 
-    public $type = 'Phpsa\Datastore\Asset\TextAsset';
+    public $type = TextAsset::class;
     public $namespace = 'property';
 
     public static function html($data) {
@@ -12,4 +12,3 @@ class TextAsset extends Asset {
     }
 
 }
-?>

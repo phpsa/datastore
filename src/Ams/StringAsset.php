@@ -5,7 +5,7 @@ use Phpsa\Datastore\Asset;
 
 class StringAsset extends Asset {
 
-    public $type = 'Phpsa\Datastore\Asset\StringAsset';
+    public $type = StringAsset::class;
     public $namespace = 'property';
 
     public static function html($data) {

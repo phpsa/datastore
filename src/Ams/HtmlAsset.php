@@ -5,7 +5,7 @@ use Phpsa\Datastore\Asset;
 
 class HtmlAsset extends Asset {
 
-    public $type = 'Phpsa\Datastore\Asset\HtmlAsset';
+    public $type = HtmlAsset::class;
     public $namespace = 'property';
 	public $options = ["formatting", "bold", "italic", "deleted", "unorderedlist","orderedlist", "image", "file", "link"];
 

@@ -49,7 +49,7 @@ trait DatastoreAttribute
 	}
 
 	public function getContentPathAttribute(){
-		return Asset::getPath($this->type);
+		return Helpers::getPath($this->type);
 	}
 
 

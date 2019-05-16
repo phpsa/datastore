@@ -3,15 +3,17 @@
 namespace Phpsa\Datastore\Ams;
 use Phpsa\Datastore\Asset;
 
+use Phpsa\Datastore\Ams\Article\ItemAsset;
+use Phpsa\Datastore\Ams\ContentAsset;
 class TestAsset extends Asset {
 
 
 	public $name = 'Test Content';
 	public $shortname = 'Tests';
 
-	public $children = 'Phpsa\Datastore\Ams\ContentAsset';
+	public $children = ContentAsset::class;
 
-	public $accept = "Phpsa\Datastore\Ams\Article\ItemAsset";
+	public $accept = ItemAsset::class;
 	public $accept_limit = "-1";
 
 	public $max_instances = 5;

@@ -7,7 +7,7 @@ use Phpsa\Datastore\Datastore as DatastoreFactory;
 use Phpsa\Datastore\Models\Traits\Attribute\DatastoreAttribute;
 use Phpsa\Datastore\Models\DatastorePages;
 use Phpsa\Datastore\Models\DatastoreComments;
-use Phpsa\Datastore\Asset;
+use Phpsa\Datastore\Helpers;
 
 class Datastore extends Model
 {
@@ -61,7 +61,7 @@ class Datastore extends Model
 	}
 
 	public function getRouteAttribute(){
-		return $this->type ? Asset::callStatic($this->type, 'route', [$this]) : null;
+		return $this->type ? Helpers::callStatic($this->type, 'route', [$this]) : null;
 	}
 
 

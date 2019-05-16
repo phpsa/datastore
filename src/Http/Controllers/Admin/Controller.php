@@ -64,9 +64,9 @@ Class Controller extends BaseController {
 		$children = [];
 		if ( ! empty($asset->children))
 		{
-			$children				 = Asset::assetInfo($asset->children);
+			$children				 = Helpers::assetInfo($asset->children);
 			$children['classname']	 = $asset->children;
-			$children['path']        = Asset::getPath($asset->children);
+			$children['path']        = Helpers::getPath($asset->children);
 
 			$kids = $asset->getChildren();
 

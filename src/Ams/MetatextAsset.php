@@ -5,7 +5,7 @@ use Phpsa\Datastore\Asset;
 
 class MetatextAsset extends Asset {
 
-    public $type = 'Phpsa\Datastore\Asset\MetatextAsset';
+    public $type = MetatextAsset::class;
     public $namespace = 'property';
 
     public static function html($data) {

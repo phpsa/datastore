@@ -2,20 +2,25 @@
 
 namespace Phpsa\Datastore;
 
-use Phpsa\Datastore\DatastoreException;
 use ReflectionClass;
-
-use Phpsa\Datastore\Ams\StringAsset;
-use Phpsa\Datastore\Ams\HtmlAsset;
-use Phpsa\Datastore\Ams\TextAsset;
-use Phpsa\Datastore\Ams\DropdownAsset;
-use Phpsa\Datastore\Ams\MetatextAsset;
-use Phpsa\Datastore\Ams\BooleanAsset;
-use Phpsa\Datastore\Ams\FileAsset;
-use Phpsa\Datastore\Ams\ImageAsset;
-
 use Illuminate\Support\Facades\View;
 
+use Phpsa\Datastore\DatastoreException;
+
+use Phpsa\Datastore\Ams\BooleanAsset;
+use Phpsa\Datastore\Ams\DropdownAsset;
+use Phpsa\Datastore\Ams\FileAsset;
+use Phpsa\Datastore\Ams\HtmlAsset;
+use Phpsa\Datastore\Ams\ImageAsset;
+use Phpsa\Datastore\Ams\MetatextAsset;
+use Phpsa\Datastore\Ams\StringAsset;
+use Phpsa\Datastore\Ams\TextAsset;
+
+/**
+ * Asset class - this is an abstract basis for the assets that shou
+ *
+ * @author Craig Smith <vxdhost@gmail.com>
+ */
 class Asset{
 
 	/**
@@ -24,14 +29,15 @@ class Asset{
 	const ASSET              = "asset";
 	const PROP               = "property";
 
-	const STRING             = StringAsset::class;
-	const TEXT               = TextAsset::class;
-	const HTML               = HtmlAsset::class;
-	const IMG                = ImageAsset::class;
-	const FILE               = FileAsset::class;
 	const BOOL               = BooleanAsset::class;
 	const DROPDOWN           = DropdownAsset::class;
+	const FILE               = FileAsset::class;
+	const HTML               = HtmlAsset::class;
+	const IMG                = ImageAsset::class;
 	const METATEXT			 = MetatextAsset::class;
+	const STRING             = StringAsset::class;
+	const TEXT               = TextAsset::class;
+
 	const FOLDER             = "amsFolderAsset";
 	const HEADING            = "amsHeadingAsset";
 	const DATEPICKER         = "amsDatepickerAsset";
@@ -40,41 +46,185 @@ class Asset{
 	const AUTOCALLBACKADDER  = "amsAutocallbackadderAsset"; // ajax powered autocomplete backed on a callback
 	const AUTOCOMPLETE       = "amsAutocompleteAsset";
 
-	public $help             = null;                        // help tips ypou may want to include
+	/**
+	 * help tips ypou may want to include properties
+	 *
+	 * @var string
+	 */
+	public $help             = null;
+
+	/**
+	 * Sets the required rule for a property
+	 *
+	 * @var bool
+	 */
+	public $required         = true;
+
+	/**
+	 * which property is the actual value name for your asset - target one of the properties
+	 *
+	 * @var string
+	 */
 	public $value_equals     = null;
 
-
-	public $name             = null;
-	public $shortname        = null;                        // just a shortname to use instead of the full $name above
-	public $embedded         = null;
-	public $theme            = null;
-	public $key              = null;
+	/**
+	 * Assets namespace, most often extended as an asset, however may be a property if adding a new input type.
+	 *
+	 * @var string
+	 */
 	public $namespace        = self::ASSET;
+
+	/**
+	 * Generally left alone unless overrideing to be a property then should have the instance class
+	 *
+	 * @var string
+	 */
 	public $type             = 'asset';
-	public $module           = null;
+
+	/**
+	 * Properties for thie asset - used to define the property assets to use to build up the asset
+	 *
+	 * @var array
+	 */
+	public $properties       = array();
+
+	/**
+	 * Public name - This is used to identify
+	 *
+	 * @var [type]
+	 */
+	public $name             = null;
+
+	/**
+	 *  just a shortname to use instead of the full $name above
+	 *
+	 * @var string
+	 */
+	public $shortname        = null;
+
+	/**
+	 * the max number of instances, 0 means unlimited - normally used for presets like the robots.txt
+	 *
+	 * @var int
+	 */
+	public $max_instances    = 0;
+
+	/**
+	 * IE if private is true, we do not show the page link block... and idsable the meta
+	 * but if private is false, we show the page link and let meta decide for itself:
+	 * @var bool
+	 */
 	public $private          = false;
-	public $value            = null;
-	public $status           = null;
-	public $options          = false;
-	public $meta             = false;                       // ancillary meta info/data - similar to options
-	public $callback         = null;
-	public $meta_description = null;                        // set to 'off' to turn it off
-	public $meta_keywords    = null;                        // set to 'off' to turn it off
-	public $page_css         = null;                        // set to 'off' to turn it off
-	public $page_js          = null;                        // set to 'off' to turn it off
-	public $children         = null;                        // what assets can be immediate children [not shared, similar to properties]
-	public $is_child         = false;                       // what assets can be immediate children [not shared, similar to properties]
-	public $accept           = null;
-	public $accept_limit     = null;
+
+	/**
+	 * @deprecated Initial -
+	 * @TODO - Remove from here and from teh database object
+	 *
+	 * @var [type]
+	 */
+	public $embedded         = null;
+
+	/**
+	 * @deprecated version
+	 * * @TODO - Remove from here and from teh database object
+	 * @var [type]
+	 */
+	public $theme            = null;
+
+	/**
+	 * set to 'off' to turn it off
+	 *
+	 * @var [type]
+	 */
+	public $meta_description = null;
+
+	 /**
+	 * set to 'off' to turn it off
+	 *
+	 * @var [type]
+	 */
+	public $meta_keywords    = null;
+
+	/**
+	 * set to 'off' to turn it off
+	 *
+	 * @var [type]
+	 */
+	public $page_css         = null;
+
+	/**
+	 * set to 'off' to turn it off
+	 *
+	 * @var [type]
+	 */
+	public $page_js          = null;
+
+
+	public $options          = false;						// Options for the element -- should actually be removed from the database table most likely
 	public $status_equals    = null;                        // does the asset has a status linked to a prop
 	public $start_date       = null;                        // does the asset has a start date linked to a prop
 	public $end_date         = null;                        // does the asset has an end date linked to a prop
 	public $comment_equals   = null;                        // does the asset allow comments (linked to a specific property - similar to status_equals)
-	public $warning          = null;                        // field for warnings
-	public $required         = true;                       // property required - defaults to true btw?
-	public $max_instances     = 0;                           // the max number of instances, 0 means unlimited - normally used for presets like the robots.txt
-	public $properties       = array();
+	public $warning          = null;                        // field for warnings - deprected in favour of validation_messages
+	//public $published		= null;							//published status
+	//public $validation_messages = null					//validation messages
 
+	public $key              = null;
+	public $module           = null;
+	public $value            = null;
+	public $status           = null;
+	public $meta             = false;                       // ancillary meta info/data - similar to options
+	public $callback         = null;
+
+	/**
+	 * Link a child asset in on teh form, this will alllwo you to create a set of children on the form.
+	 *
+	 * @var [type]
+	 */
+	public $children         = null;
+
+	/**
+	 * Is this a child only asset? if marked as true does not auto display on menu options and can only be linked in as a child property to an asset.
+	 *
+	 * @var bool
+	 */
+	public $is_child         = false;
+
+	/**
+	 * Asset that can be a child, ie an article belonging to a category
+	 *
+	 * @var [type]
+	 */
+	public $accept           = null;
+
+	/**
+	 * assets that can be children, a value means it is limited to that many children, -1 means unlimited
+	 * @TodO update this to better display with a selct / multiSelect null / 0 / -1 or any falsy is unlimited, else it is limited to that number...
+	 * @var [type]
+	 */
+	public $accept_limit     = null;
+
+
+	/**
+	 * generate the route for this asset
+	 * Overwrite this in your own assets to generate your own route
+	 */
+	public static function route($record, $path = null){
+		if(null === $path){
+			$path = 'frontend.ams.page.id.slug';
+		}
+		$page = $record->page;
+		return route($path, ['slug' => $page->slug, 'id' => $page->id]);
+	}
+
+	/**
+	 * holds the about information - should be overwritten by most Assets
+	 * @abstract - should be extended in children
+	 */
+	public static function about()
+	{
+		throw new DatastoreException("All Assets require an about method to describe them");
+	}
 
 	/**
 	 * Get our Default properties for this asset
@@ -88,23 +238,21 @@ class Asset{
 
 	/**
 	 * returns the label for the asset public identifier
+	 *
+	 * @todo - test if we still actually use this!!!
+	 * @deprecated initially ?
 	 * @return string
 	 */
 	public static function getValueLabel()
 	{
 		$props = self::getDefaultProperties();
+		if(empty($props['value_equals']) || empty($props['properties'][$props['value_equals']]['name'])){
+			throw new DatastoreException("value_equals is a required parameter");
+		}
 
-		if ($props['value_equals'])
-		{
-			$out = $props['properties'][$props['value_equals']]['name'];
-			unset($obj, $props);
-			return $out;
-		}
-		else
-		{
-			unset($obj, $props);
-			return 'Name';
-		}
+		$out = $props['properties'][$props['value_equals']]['name'];
+		unset($obj, $props);
+		return $out;
 	}
 
 	/**
@@ -135,16 +283,6 @@ class Asset{
 		return $props;
 	}
 
-	/**
-	 * holds the about information - should be overwritten by most Assets
-	 * @abstract - should be extended in children
-	 */
-	public static function about()
-	{
-		throw new DatastoreException("All Assets require an about method to describe them");
-	}
-
-
 
 	/**
 	 * Returns the Class's filename
@@ -163,8 +301,8 @@ class Asset{
 		}
 		$ns = strtolower(implode("-", $parts));
 
-		$name = self::_splitByCaps($className, false);
-		return $ns . '::' . $type . '.' . self::_splitByCaps($className, false, "-");
+		$name = Helpers::splitByCaps($className, false);
+		return $ns . '::' . $type . '.' . Helpers::splitByCaps($className, false, "-");
 	}
 
 
@@ -217,99 +355,26 @@ class Asset{
 	}
 
 	/**
-	 * Splits a word by capitals and glues it together with a space or the glue
-	 *
-	 * @param string $string
-	 * @param boolean $ucfirst
-	 * @param string $glue
-	 * @return string
-	 */
-	public static function _splitByCaps($string, $ucfirst = true, $glue = false)
-	{
-		$pattern	 = "/(.)([A-Z])/";
-		$replacement = "\\1 \\2";
-		$return		 = ($ucfirst) ?
-			ucfirst(preg_replace($pattern, $replacement, $string)) :
-			strtolower(preg_replace($pattern, $replacement, $string));
-
-		return ($glue) ? str_replace(' ', $glue, $return) : $return;
-	}
-
-	/**
 	 * Creates a new Asset Instance
-	 * @param string $classname
+	 * @param string $className
 	 * @param array $args
-	 * @return DF_Asset
+	 * @return Asset
 	 * @TODO Use Namespacing to autoload!!!
 	 */
-	public static function factory($classname, $args = array())
+	public static function factory($className, $args = array())
 	{
-
-		$ref = new ReflectionClass($classname);
+		$ref = new ReflectionClass($className);
 		return $ref->newInstanceArgs($args);
 	}
 
-		/**
-	 * Gets the module based on the classname
-	 * @param string $class
-	 * @return string
-	 */
-	public static function get_module($class)
-	{
-
-		$parts = explode('\\', $class);
-		array_pop($parts);
-		$ns = '';
-		if(end($parts) !== 'Ams'){
-			//array_pop($parts);
-			$ns = ucfirst(array_pop($parts));
-		}
-
-		return $ns;
-	}
-
-
 	/**
-	 * gets information tag from the asset
-	 * @param string $assetclassname
-	 * @param mixed $lookup - what information to lookup
-	 * @return mixed information
-	 */
-	public static function assetInfo($assetclassname, $lookup = false)
-	{
-		return self::callStatic($assetclassname, 'getinfo', array($lookup));
-	}
-
-	/**
-	 * Calls a static method
-	 * @param string $classname class to call
-	 * @param string $method method to call
-	 * @param array $params_array method parameters
-	 * @return mixed
-	 */
-	public static function callStatic($classname, $method, $params_array = array())
-	{
-		return call_user_func_array(array($classname, $method), $params_array);
-	}
-
-	/**
-	 * Legacy - to be worked out
+	 * this is an overridable method used to create the value equals based on the field to use
 	 * @param string $value
 	 * @return string
 	 */
 	public static function valueEquals($value)
 	{
 		return $value;
-	}
-
-	/**
-	 * Gets the namespace of an asset!
-	 * @param string $assetclassname
-	 * @return string
-	 */
-	public static function assetNamespace($assetclassname)
-	{
-		return self::callStatic($assetclassname, 'getNamespace');
 	}
 
 	/**
@@ -324,19 +389,7 @@ class Asset{
 		if(null === $className) {
 			$className = get_called_class();
 		}
-		$mod = self::get_module($className);
-		$sn = self::assetInfo($className, 'shortname');
-		return !empty($mod) ? strtolower($mod .'.' . $sn) : strtolower($sn);
+		return Helpers::getPath($className);
 	}
 
-	/**
-	 * generate the route for this asset
-	 */
-	public static function route($record, $path = null){
-		if(null === $path){
-			$path = 'frontend.ams.page.id.slug';
-		}
-		$page = $record->page;
-		return route($path, ['slug' => $page->slug, 'id' => $page->id]);
-	}
 }

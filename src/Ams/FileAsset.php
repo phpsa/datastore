@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Storage;
 
 class FileAsset extends Asset {
 
-    public $type = 'Phpsa\Datastore\Ams\FileAsset';
+    public $type = FileAsset::class;
     public $namespace = 'property';
 
     public static function html($data) {

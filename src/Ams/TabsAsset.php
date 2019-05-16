@@ -9,7 +9,7 @@ class TabsAsset extends Asset {
 	public $name = 'Tab Page';
 	public $shortname = 'Tabs';
 
-	public $children = 'Phpsa\Datastore\Ams\TabAsset';
+	public $children = TabAsset::class;
 
 
 	// map our value as equal to whatever the title property is set on save.

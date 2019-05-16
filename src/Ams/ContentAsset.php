@@ -9,7 +9,6 @@ class ContentAsset extends Asset {
 	public $shortname = 'Content';
 	public $is_child = false;
 
-
 	public $value_equals = 'title';
     public $status_equals = 'status';
 

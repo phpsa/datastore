@@ -8,7 +8,7 @@ class BooleanAsset extends Asset {
 
 	public $shortname = 'Bool';
 
-    public $type = 'Phpsa\Datastore\Ams\BooleanAsset';
+    public $type = BooleanAsset::class;
 
 	public $namespace = 'property';
 

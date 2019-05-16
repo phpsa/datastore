@@ -40,7 +40,7 @@ Class DatastoreController extends Controller {
 		$datastore = $page->datastore;
 		$user = auth()->user();
 
-		if(!$datastore->statusActive() && (!$user || !$user->can('manage datastore'))) {
+		if(!$datastore->statusIsActive() && (!$user || !$user->can('manage datastore'))) {
 			abort(404);
 		}
 

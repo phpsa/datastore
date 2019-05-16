@@ -11,14 +11,20 @@
             <div class="col-sm-5">
                 <h4 class="card-title mb-0">
                     {{ __('phpsa-datastore::backend.labels.content.list') }} <small class="text-muted">{{ $asset['name'] }}</small>
-                </h4>
+				</h4>
+
             </div><!--col-->
 
             <div class="col-sm-7">
 				<?php if($asset['max_instances'] == 0 || $content->total() < $asset['max_instances']): ?>
 				@include('phpsa-datastore::backend.ams.includes.header-buttons')
 			<?php endif; ?>
-            </div><!--col-->
+			</div><!--col-->
+			<?php if($asset['about']): ?>
+			<div class="col-sm-11">
+				<div class="alert alert-info">{{ $asset['about'] }}</div>
+			</div>
+		<?php endif; ?>
         </div><!--row-->
 
 
