@@ -87,7 +87,26 @@ class Helpers {
 		);
 	}
 
+	public static function getStatusEquals($className){
+		$statusEquals = self::assetInfo($className, 'status_equals');
+		if(!$statusEquals){
+			return null;
+		}
+		$props = self::getAssetProps($className,$statusEquals);
+		return isset($props['published'])?$props['published'] : null;
+	}
 
+
+	public static function getAssetProps($className, $property = null){
+		$properties = self::assetInfo($className, 'properties');
+		if(!$properties){
+			throw new DatastoreException("No Properties found for asset");
+		}
+		if($property){
+			return isset($properties[$property]) ? $properties[$property] : null;
+		}
+		return $properties;
+	}
 
 	/**
 	 * List of assets

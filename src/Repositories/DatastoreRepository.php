@@ -7,6 +7,8 @@ use App\Repositories\BaseRepository;
 use Phpsa\Datastore\Models\Datastore as DatastoreModel;
 use Illuminate\Database\Eloquent\Collection;
 use Phpsa\Datastore\Datastore;
+use Phpsa\Datastore\Models\DatastoreDatastore;
+use Phpsa\Datastore\Repositories\DatastoreDatastoreRepository;
 /**
  * Class PermissionRepository.
  */
@@ -24,14 +26,8 @@ class DatastoreRepository extends BaseRepository
 		$this->where('type', $assetData['class']);
 		return $this->paginate($limit, ['*'], $pageName, $page);
 
-
-		$models->transform(function ($item, $key) {
-			return Datastore::getAssetById($item->id);
-		});
-
-		return $models;
-
 	}
+
 
 	    /**
      * @param int    $limit
@@ -53,5 +49,11 @@ class DatastoreRepository extends BaseRepository
 	}
 
 
+	public function paginateAccepted($datastore_id, $status = NULL, $limit = 25, $pageName = 'page', $page = null){
+		$ds2 = new DatastoreDatastoreRepository();
+		return $ds2->paginateAccepted($datastore_id, $status, $limit, $pageName, $page);
+	}
+
+//DatastoreDatastoreRepository
 
 }

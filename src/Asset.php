@@ -292,19 +292,26 @@ class Asset{
 	 */
 	public static function getFilename($type = 'render')
 	{
+		$path = get_called_class();
+		$className = class_basename($path);
+		$parts = explode('\\', $path);
+
+		$split = array_search('Ams', $parts);
+		$ns = array_slice($parts, 0, $split);  // first part
+		$path = array_slice($parts, $split); // second part
+
+		$ns = implode("", $ns);
+
 		//break the class to class and namespace
 		$parts = explode('\\', get_called_class());
 		$className = array_pop($parts);
 		$last = array_pop($parts);
-		//remove ams as we do not want to force it as part of our path.
-		if(trim(strtolower($last)) !== 'ams'){
-			$parts.push($last);
-		}
-		$ns = strtolower(implode("-", $parts));
 
-		$name = Helpers::splitByCaps($className, false);
-		return $ns . '::' . $type . '.' . Helpers::splitByCaps($className, false, "-");
+
+		return Helpers::splitByCaps($ns, false, "-") . '::' . $type . '.' . Helpers::splitByCaps($className, false, "-");
+
 	}
+
 
 
 	/**

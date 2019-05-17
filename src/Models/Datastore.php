@@ -41,6 +41,11 @@ class Datastore extends Model
 		return $this->hasOne(DatastorePages::class, 'asset');
 	}
 
+	public function items(){
+		return $this->hasMany(DatastoreDatastore::class, 'datastore2_id', 'id');
+	}
+
+
 	/**
      * The has Many Relationship
      *
@@ -51,18 +56,7 @@ class Datastore extends Model
         return $this->hasMany(DatastoreComments::class)->whereNull('parent_id');
     }
 
-	public function getDatastoreAttribute(){
-		if($this->id){
-			return DatastoreFactory::getAsset($this->type, $this->id);
-		}
-		if($this->type){
-			return DatastoreFactory::dispence($this->type);
-		}
-	}
 
-	public function getRouteAttribute(){
-		return $this->type ? Helpers::callStatic($this->type, 'route', [$this]) : null;
-	}
 
 
 }

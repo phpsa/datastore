@@ -68,7 +68,7 @@ Class Controller extends BaseController {
 			$children['classname']	 = $asset->children;
 			$children['path']        = Helpers::getPath($asset->children);
 
-			$kids = $asset->getChildren();
+			$kids = $asset->children();
 
 			if (!$kids)
 			{

@@ -3,7 +3,7 @@
 namespace Phpsa\Datastore\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Phpsa\Datastore\Models\Datastore as DatastoreModel;
 class DatastoreDatastore extends Model
 {
 	//
@@ -16,4 +16,22 @@ class DatastoreDatastore extends Model
 		'datastore_id',
 		'datastore2_id'
 	];
+
+
+	public function parent()
+    {
+        return $this->belongsTo(DatastoreModel::class, 'datastore2_id');
+	}
+
+	public function page()
+	{
+		return $this->hasOne(DatastorePages::class, 'asset', 'datastore_id');
+	}
+
+
+	public function datastore(){
+		return $this->belongsTo(DatastoreModel::class, 'datastore_id');
+	}
+
+
 }

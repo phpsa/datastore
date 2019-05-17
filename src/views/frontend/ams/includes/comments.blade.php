@@ -1,21 +1,24 @@
+@include('phpsa-datastore::frontend.ams.includes.comment', ['comments' => $datastore->comments, 'datastore_id' => $datastore->id, 'level' => 0])
+
+<hr />
 
 
-@foreach($comments as $comment)
-    <div class="display-comment" @if($comment->parent_id != null) style="margin-left:40px;" @endif>
-        <strong>{{ $comment->user->name }}</strong>
-        <p>{{ $comment->body }}</p>
-        <a href="" id="reply"></a>
-        <form method="post" action="{{ route('frontend.ams.comments.store') }}">
-            @csrf
-            <div class="form-group">
-                <input type="text" name="body" class="form-control" />
-                <input type="hidden" name="datastore_id" value="{{ $datastore_id }}" />
-                <input type="hidden" name="parent_id" value="{{ $comment->id }}" />
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-warning" value="Reply" />
-            </div>
-		</form>
-		@include('phpsa-datastore::frontend.ams.includes.comments', ['comments' => $comment->replies, 'datastore_id' => $datastore->id])
-    </div>
-@endforeach
+			{{ html()->form('POST', route('frontend.ams.comments.store'))->class('form-horizontal')->open() }}
+			<div class="row form_group mb-3">
+				{{ html()->label('Add Comment')->class('col-md-12 form-control-label')->for('commentBody') }}
+				<input type="hidden" name="datastore_id" value="{{ $datastore->id }}" />
+				<div class="col-md-12">
+
+					{{ html()
+					->textarea('body')
+					->placeholder('Enter your comment here')
+					->attribute('id', 'commentBody')
+					->class('form-control')
+					->required()
+					}}
+				</div>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-success" value="Add Comment" />
+			</div>
+			{{ html()->form()->close() }}

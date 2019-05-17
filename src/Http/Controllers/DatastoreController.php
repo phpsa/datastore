@@ -29,9 +29,16 @@ Class DatastoreController extends Controller {
         $this->datastoreRepository = $datastoreRepository;
 	}
 
-	public function page($slug){
+	protected function iCan($permission, $then, $else){
+		$user = auth()->user();
+		return $user && $user->can($permission) ? $then : $else;
+	}
 
+	protected function canViewAll($status = 'published'){
+		return $this->iCan('manage datastore', null , $status);
+	}
 
+	protected function getPageBySlug($slug){
 		$page = DatastorePages::where('slug', $slug)->first();
 		if(!$page){
 			abort(404);
@@ -43,10 +50,19 @@ Class DatastoreController extends Controller {
 		if(!$datastore->statusIsActive() && (!$user || !$user->can('manage datastore'))) {
 			abort(404);
 		}
+		return $page;
+	}
 
-		return view($datastore->getViewName())
+	public function page($slug){
+
+		$page = $this->getPageBySlug($slug);
+
+		$acceptedAssets = $page->datastore->accept ? $this->datastoreRepository->paginateAccepted($page->asset, $this->canViewAll(Helpers::getStatusEquals($page->datastore->accept))) : false;
+
+		return view($page->datastore->getViewName())
 		->withDatastore($page->datastore)
-		->withChildren($page->datastore->getChildren())
+		->withChildren($page->datastore->children())
+		->withAccepted($acceptedAssets)
 		->withPage($page);
 
 

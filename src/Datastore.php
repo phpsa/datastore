@@ -841,7 +841,7 @@ class Datastore{
 	 * Gets the current datastore children
 	 * @return array
 	 */
-	public function getChildren()
+	public function children()
 	{
 		$return = false;
 
@@ -1034,6 +1034,8 @@ class Datastore{
 		return Helpers::getPath($this->type);
 	}
 
+
+
 	/**
 	 * Gets our view name
 	 *
@@ -1053,7 +1055,8 @@ class Datastore{
 	 * @return void
 	 */
 	public function __get($name){
-		return $this->__model->{$name};
+
+		return $this->propExists($name) ? $this->prop($name) : $this->__model->{$name};
 	}
 
 }

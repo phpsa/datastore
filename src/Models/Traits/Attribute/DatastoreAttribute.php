@@ -1,7 +1,7 @@
 <?php
 
 namespace Phpsa\Datastore\Models\Traits\Attribute;
-
+use Phpsa\Datastore\Datastore as DatastoreFactory;
 use Phpsa\Datastore\Helpers;
 
 /**
@@ -56,6 +56,24 @@ trait DatastoreAttribute
 	public function getParentsAttribute(){
 		$rows = Datastore::find(1);
 		$data['parents'] = $this->db->query('select distinct(type), name, accept_limit from datastore where accept LIKE ?', array('%' . $newasset->type . '%'))->result_array();
+
+	}
+
+	public function getDatastoreAttribute(){
+		if($this->id){
+			return DatastoreFactory::getAsset($this->type, $this->id);
+		}
+		if($this->type){
+			return DatastoreFactory::dispence($this->type);
+		}
+	}
+
+	public function getRouteAttribute(){
+		return $this->type ? Helpers::callStatic($this->type, 'route', [$this]) : null;
+	}
+
+	public function routeChild($parentSlug){
+		return $this->type ? Helpers::callStatic($this->type, 'route', [$this, $parentSlug]) : null;
 
 	}
 

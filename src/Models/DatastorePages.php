@@ -19,7 +19,6 @@ class DatastorePages extends Model
 		'asset'
 	];
 
-
 	public function getDatastoreAttribute(){
 		return $this->id ? Datastore::getAssetById($this->asset) : null;
 	}
