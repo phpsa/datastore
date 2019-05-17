@@ -65,7 +65,10 @@ Class DatastoreController extends Controller {
 		->withAccepted($acceptedAssets)
 		->withPage($page);
 
+	}
 
+	public function childPage($parent_slug, $slug){
+		return $this->page($slug);
 	}
 
     public function ___tests()

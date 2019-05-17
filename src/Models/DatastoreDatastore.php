@@ -33,5 +33,12 @@ class DatastoreDatastore extends Model
 		return $this->belongsTo(DatastoreModel::class, 'datastore_id');
 	}
 
+	public function getItemAttribute(){
+		return $this->datastore->datastore;
+	}
+
+	public function prop($key){
+		return $this->item->prop($key);
+	}
 
 }

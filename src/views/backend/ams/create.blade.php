@@ -69,7 +69,7 @@
 
 
 									<?php if ($parents): ?>
-										<?php foreach ($parents as $parent): ?>
+										<?php foreach ($parents as $pid => $parent): ?>
 										<div class="tab-pane fade" id="parent_{{ $pid }}" role="tabpanel" aria-labelledby="<parent_{{ $pid }}_tab">
 
 

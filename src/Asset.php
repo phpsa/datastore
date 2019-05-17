@@ -212,10 +212,10 @@ class Asset{
 	 */
 	public static function route($record, $path = null){
 		if(null === $path){
-			$path = 'frontend.ams.page.id.slug';
+			$path = 'frontend.ams.page.slug';
 		}
 		$page = $record->page;
-		return route($path, ['slug' => $page->slug, 'id' => $page->id]);
+		return route($path, ['slug' => $page->slug]);
 	}
 
 	/**

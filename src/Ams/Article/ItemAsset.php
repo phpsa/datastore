@@ -28,7 +28,8 @@ class ItemAsset extends Asset {
         'published' => array(
             'name' => 'Published',
             'type' => self::DROPDOWN,
-            'options' => ['draft' => 'Draft', 'published' => 'Published', 'aarchive' => 'Archived']
+			'options' => ['draft' => 'Draft', 'published' => 'Published', 'aarchive' => 'Archived'],
+			'published' => ['published']
         ),
 
     );

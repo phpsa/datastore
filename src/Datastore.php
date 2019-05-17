@@ -10,6 +10,7 @@ use Phpsa\Datastore\Asset;
 use Phpsa\Datastore\Helpers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Carbon;
 use Validator;
 use ReflectionClass;
 use ReflectionProperty;
@@ -63,6 +64,9 @@ class Datastore{
 			{
 				if($k === 'options'){
 					$v = json_decode($v, true);
+				}
+				if(in_array($k, ['created_at','updated_at','date_start','date_end'])){
+					$v = Carbon::parse($v);
 				}
 				$this->{$k} = $v;
 			}
@@ -1055,7 +1059,6 @@ class Datastore{
 	 * @return void
 	 */
 	public function __get($name){
-
 		return $this->propExists($name) ? $this->prop($name) : $this->__model->{$name};
 	}
 

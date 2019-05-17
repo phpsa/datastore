@@ -22,7 +22,8 @@ class Datastore extends Model
     protected $dates = [
         'start_date',
 		'end_date',
-		'updated_at'
+		'updated_at',
+		'created_at'
 	];
 
 
@@ -43,6 +44,11 @@ class Datastore extends Model
 
 	public function items(){
 		return $this->hasMany(DatastoreDatastore::class, 'datastore2_id', 'id');
+	}
+
+	public function parents(){
+		return $this->hasManyThrough(self::class, DatastoreDatastore::class, 'datastore_id', 'id', 'id', 'datastore2_id');
+
 	}
 
 

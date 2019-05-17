@@ -23,12 +23,11 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'admin.ams.
 
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.ams.', 'prefix' => $prefix ], function () {
 	Route::get('{slug}', [DatastoreController::class, 'page'])->name('page.slug');
-	Route::get('{id}', [DatastoreController::class, 'pageById'])->name('page.id');
-	Route::get('{id}/{slug}', [DatastoreController::class, 'pageById'])->name('page.id.slug');
-	Route::get('articles/{slug}', [DatastoreController::class, 'articleCategory'])->name('article.category');
-	Route::get('article/{category_slug}/{slug}', [DatastoreController::class, 'articleCategoryItem'])->name('articles.article');
-	Route::get('article/{slug}', [DatastoreController::class, 'articleItem'])->name('article.article');
+	Route::get('articles/{slug}', [DatastoreController::class, 'page'])->name('article.category');
+	Route::get('article/{category_slug}/{slug}', [DatastoreController::class, 'childPage'])->name('articles.article');
+	Route::get('article/{slug}', [DatastoreController::class, 'page'])->name('article.article');
 
+	//store our comments as they are posted
 	Route::post('comments', [CommentsController::class, 'store'])->name('comments.store');
 });
 

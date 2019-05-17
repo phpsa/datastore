@@ -40,7 +40,6 @@ class ContentAsset extends Asset {
 	 * generate the route for this asset
 	 */
 	public static function route($record, $path = null){
-
 		$path = 'frontend.ams.page.slug';
 		$page = $record->page;
 		return route($path, ['slug' => $page->slug]);

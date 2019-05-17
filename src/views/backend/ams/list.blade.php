@@ -36,7 +36,7 @@
                         <thead>
                         <tr>
 							<th>@lang('phpsa-datastore::backend.labels.asset.title')</th>
-							@if($asset['has_meta'])
+							@if(!$asset['private'])
 							<th>@lang('phpsa-datastore::backend.labels.asset.link')</th>
 							@endif
                             <th>@lang('phpsa-datastore::backend.labels.asset.created')</th>
@@ -54,7 +54,7 @@
 
 									{{ $contentItem->datastore }}
 								</td>
-								@if($asset['has_meta'])
+								@if(!$asset['private'])
 								<td>
 									@if($contentItem->page)
 									<a href="{{ $contentItem->route }}" target="_blank">{{ $contentItem->route }}</a>
