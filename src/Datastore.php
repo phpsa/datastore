@@ -465,13 +465,13 @@ class Datastore{
 	{
 		if (isset($this->__asset_properties[$prop]['temp']))
 		{
-			echo $this->__asset_properties[$prop]['temp']->getMarkup($template);
+			return $this->__asset_properties[$prop]['temp']->getMarkup($template);
 		}
 		else
 		{
 			if (isset($this->__asset_properties[$prop]))
 			{
-				echo $this->ownDatastore[$this->__asset_properties[$prop]]->getMarkup($template);
+				return $this->ownDatastore[$this->__asset_properties[$prop]]->getMarkup($template);
 			}
 		}
 	}
@@ -601,14 +601,10 @@ class Datastore{
 		$output = null;
 		if ($this->namespace == 'asset')
 		{
-
-
 			foreach ($this->__asset_properties as $prop => $val)
 			{
 				$output .= $this->returnForm($prop, false, $_prop);
 			}
-
-			//  exit;
 		}
 		else
 		{
@@ -641,7 +637,6 @@ class Datastore{
 			$vars['_unique_id'] = md5(uniqid(rand(), true)); //UUID ??
 		}
 
-
 		// we also want to know what asset this property belongs to
 		$output = Helpers::callStatic($this->type, 'form', array($vars, $template));
 		if (!$output)
@@ -649,6 +644,10 @@ class Datastore{
 			return null;
 		}
 		return $output;
+	}
+
+	public function propGetValue($prop){
+		dd($prop);
 	}
 
 	/**
@@ -1060,6 +1059,10 @@ class Datastore{
 	 */
 	public function __get($name){
 		return $this->propExists($name) ? $this->prop($name) : $this->__model->{$name};
+	}
+
+	public function getTitleField(){
+		return $this->__value_equals;
 	}
 
 }

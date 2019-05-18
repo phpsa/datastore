@@ -1,4 +1,4 @@
-<div class="row form_group">
+<div class="row form-group">
 		{{ html()->label($data['name'])->class('col-md-2 form-control-label')->for('asset_' . $data['key']) }}
 		<div class="col-md-10">
 			{{ html()->textarea($data['key'])

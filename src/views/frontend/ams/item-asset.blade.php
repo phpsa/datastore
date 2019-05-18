@@ -7,7 +7,7 @@
         <div class="col">
 			<div class="blog-post">
 				<h2 class="blog-post-title">{{ $datastore->prop('title') }}</h2>
-				<p class="blog-post-meta">{{ $datastore->created_at->format("M d, Y") }}by <a href="#">TODO</a></p>
+				<p class="blog-post-meta">{{ $datastore->created_at->format("M d, Y") }} by <a href="{{ route('frontend.ams.article.byauthor', ['id' => $datastore->prop('author'), 'slug' => Str::slug( $datastore->render('author') ) ]) }}">{{ $datastore->render('author') }}</a></p>
 
 				<p>{{ $datastore->prop('intro') }}</p>
 				<hr>

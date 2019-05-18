@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Models\Auth\User;
 
 Class Controller extends BaseController {
 
@@ -322,11 +323,28 @@ Class Controller extends BaseController {
 	}
 
 	public function file(Request $request) {
-
-
 		$path = Storage::putFile('public', $request->file('file'), 'public');
-		//$path = $request->file('file')->store('ams');
 		return response()->json(["file" => $path]);
+	}
+
+
+	public function indentityAutocomplete(Request $request){
+		$search = urldecode($request->input('q'));
+		$results = [];
+		if( strlen($search) >= 3 )
+		{
+			$userModel = config('auth.providers.users.model');
+			$records = $userModel::whereRaw("concat_ws(' ', first_name, last_name) like ? ", ["{$search}%"])->limit(10)->get(['id','first_name','last_name']);
+			foreach($records as $record)
+			{
+				$result = [
+					'value' => $record->id,
+					'label' => $record->first_name . ' ' . $record->last_name
+				];
+				$results[] = $result;
+			}
+		}
+		return response()->json($results);
 	}
 
 }

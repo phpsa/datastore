@@ -22,7 +22,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 		$this->loadMigrationsFrom(__DIR__.'/Database/migrations');
 
 		//Router
-
 		Route::middleware('web')
 			->group(__DIR__.'/routes.php');
 
@@ -36,6 +35,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
 		$this->publishes([
 			__DIR__.'/translations' => resource_path('lang/vendor/phpsa-datastore'),
+			// Assets
+			__DIR__.'/resources/js' => public_path('vendor/phpsa-datastore/js'),
+			__DIR__.'/resources/css' => public_path('vendor/phpsa-datastore/css'),
 		]);
 
 		$this->registerBladeHelpers();

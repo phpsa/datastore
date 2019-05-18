@@ -54,6 +54,23 @@ class DatastoreRepository extends BaseRepository
 		return $ds2->paginateAccepted($datastore_id, $status, $limit, $pageName, $page);
 	}
 
+	public function paginateSearchProp($property, $property_value, $parent_type, $parent_status = NULL, $limit = 25, $pageName = 'page', $page = null){
+
+		if($parent_status){
+			$this->where('status', $published_status);
+		}
+
+		$this->newQuery()->eagerLoad()->setClauses()->setScopes();
+
+		$this->with('properties')->whereHas('properties', function($query) use ($property, $property_value) {
+			$query->where('value', $property_value);
+			$query->where('key', $property);
+		});
+
+		return $this->paginate($limit, ['*'], $pageName, $page);
+
+	}
+
 //DatastoreDatastoreRepository
 
 }

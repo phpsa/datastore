@@ -34,7 +34,7 @@ class Datastore extends Model
 
 	public function assets()
 	{
-		return $this->belongsTo(Datastore::class);
+		return $this->belongsTo(Datastore::class, 'datastore_id');
 	}
 
 	public function page()

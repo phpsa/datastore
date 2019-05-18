@@ -71,6 +71,10 @@ Class DatastoreController extends Controller {
 		return $this->page($slug);
 	}
 
+	public function articleByAuthor($author_id, $slug){
+		$this->datastoreRepository->paginateSearchProp('author', $author_id, Phpsa\Datastore\Ams\Article\ItemAsset::class, $this->canViewAll('published'));
+	}
+
     public function ___tests()
     {
 

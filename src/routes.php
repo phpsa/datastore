@@ -14,6 +14,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'admin.ams.
 	Route::get('ams/slug', [AdminController::class, 'slug'])->name('content.slug');
 	Route::post('ams/file', [AdminController::class, 'file'])->name('content.file');
 	Route::get('ams/inject', [AdminController::class, 'inject'])->name('content.inject');
+	Route::get('ams/autocomplete/identity', [AdminController::class, 'indentityAutocomplete'])->name('autocomplete.identity');
 	Route::get('ams/list/{asset}', [AdminController::class, 'list'])->name('content.list');
 	Route::get('ams/create/{asset}', [AdminController::class, 'create'])->name('content.create');
 	Route::get('ams/edit/{asset}/{id}', [AdminController::class, 'edit'])->name('content.update');
@@ -23,6 +24,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'admin.ams.
 
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.ams.', 'prefix' => $prefix ], function () {
 	Route::get('{slug}', [DatastoreController::class, 'page'])->name('page.slug');
+	Route::get('articles/author/{id}-{slug}', [DatastoreController::class, 'articleByAuthor'])->name('article.byauthor');
 	Route::get('articles/{slug}', [DatastoreController::class, 'page'])->name('article.category');
 	Route::get('article/{category_slug}/{slug}', [DatastoreController::class, 'childPage'])->name('articles.article');
 	Route::get('article/{slug}', [DatastoreController::class, 'page'])->name('article.article');

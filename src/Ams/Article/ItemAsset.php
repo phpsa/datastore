@@ -24,7 +24,11 @@ class ItemAsset extends Asset {
         'content' => array(
             'name' => 'Full Body',
             'type' => self::HTML
-        ),
+		),
+		'author' => array(
+			'name' => 'Author',
+			'type' => self::IDENTITY
+		),
         'published' => array(
             'name' => 'Published',
             'type' => self::DROPDOWN,

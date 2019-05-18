@@ -4,7 +4,7 @@
 
 
 			{{ html()->form('POST', route('frontend.ams.comments.store'))->class('form-horizontal')->open() }}
-			<div class="row form_group mb-3">
+			<div class="row form-group">
 				{{ html()->label('Add Comment')->class('col-md-12 form-control-label')->for('commentBody') }}
 				<input type="hidden" name="datastore_id" value="{{ $datastore->id }}" />
 				<div class="col-md-12">

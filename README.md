@@ -36,10 +36,10 @@ Register package facade in `config/app.php` in `aliases` section
 Phpsa\Datastore\Facades\Datastore::class,
 ```
 
-### Publish Configuration File
+### Publish Configuration/Translations/Js/scss File
 
 ```bash
-php artisan vendor:publish --provider="Phpsa\Datastore\ServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Phpsa\Datastore\ServiceProvider"
 ```
 
 ## Using `rappasoft/laravel-5-boilerplate`

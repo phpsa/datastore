@@ -1,4 +1,4 @@
-<div class="row form_group">
+<div class="row form-group">
 	<?php $key = isset($data['unique_id']) ? $data['key'] . '_' . $data['unique_id'] : $data['key'] ; ?>
 		{{ html()->label($data['name'])->class('col-md-2 form-control-label')->for($key) }}
 		<div class="col-md-10">

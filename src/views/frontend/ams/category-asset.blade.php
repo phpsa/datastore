@@ -10,7 +10,7 @@
 
 <div class="blog-post">
 	<h2 class="blog-post-title">{{ $article->item->prop('title') }}</h2>
-	<p class="blog-post-meta">{{ $article->datastore->created_at->format("M d, Y") }} by <a href="#">TODO</a></p>
+	<p class="blog-post-meta">{{ $article->datastore->created_at->format("M d, Y") }} by <a href="#">{{ $article->item->render('author') }}</a></p>
 
 	<p>{{ $article->item->prop('intro') }}</p>
 	<p class="text-right"><a href="{{$article->datastore->routeChild($page->slug)}}">Read</a></p>

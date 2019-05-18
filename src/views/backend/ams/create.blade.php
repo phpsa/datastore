@@ -164,7 +164,7 @@
 													<h6>@lang('phpsa-datastore::backend.labels.tabs.page')<small> - @lang('phpsa-datastore::backend.labels.tabs.label.createmodifyseo')</small></h6>
 													<hr />
 
-													<div class="row form_group mb-3">
+													<div class="row form-group">
 														{{ html()->label('Page Title')->class('col-md-2 form-control-label')->for('pageTitle') }}
 														<div class="col-md-10">
 
@@ -179,7 +179,7 @@
 														</div>
 													</div>
 
-													<div class="row form_group mb-3">
+													<div class="row form-group">
 															{{ html()->label('Page Link')->class('col-md-2 form-control-label')->for('pageSlug') }}
 															<div class="col-md-10">
 
@@ -250,214 +250,25 @@
 @endsection
 
 @push('after-scripts')
+<script>
+var amsSettings = {
+	editing: {{ empty($asset->id) ? 'false' : $asset->id }},
+	titleField: '{{ $asset->getTitleField() }}',
+	routes: {
+		slug: '{{ route('admin.ams.content.slug')}}',
+		inject: '{{ route('admin.ams.content.inject')}}',
+		file: '{{ route('admin.ams.content.file') }}',
+		image: '{{ route('admin.ams.content.file') }}'
+	}
+}
+</script>
 {!! script('https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.17.0/trumbowyg.min.js') !!}
 {!! script('https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.17.0/plugins/cleanpaste/trumbowyg.cleanpaste.min.js') !!}
-{!! script('https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.17.0/plugins/cleanpaste/trumbowyg.pasteimage.min.js') !!}
 {!! script('https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.17.0/plugins/base64/trumbowyg.base64.min.js') !!}
-<script>
-//htmlEditor
-$('.ams-htmleditor').trumbowyg();
-
-//Autocomplete
-<?php if(empty($asset->id)): ?>
-	var timedCall = false;
-	$(document).on('keyup', '#pageTitle', function() {
-		if(timedCall) clearTimeout(timedCall);
-		var pageTitle = $(this).val()
-		timedCall = setTimeout(function() {
-			$.get('{{ route('admin.ams.content.slug')}}?generate=1&id={{ $asset->id }}&page_slug=' + pageTitle)
-			.then(function(response) {
-				$('#pageSlug').val(response.slug);
-				validator.element( "#pageSlug" );
-			});
-		}, 350);
-
-	});
-<?php endif; ?>
-
-
-
-//form Validation
-var validator = $('#create-asset-form').validate({
-	ignore: [
-		'.no-validate'
-	],
-	invalidHandler: function() {
-
-	//	$(this).find('input[type="submit"]').attr('disabled', true);
-	//    $(this).find('button[type="submit"]').attr('disabled', true);
-		var submits = $(this).find('[type="submit"]');
-            setTimeout(function() {
-				submits.attr('disabled', false);
-                $('.nav-tabs a strong.required').remove();
-                var validatePane = $('.tab-content.tab-validate .tab-pane:has(input.is-invalid)').each(function() {
-                    var id = $(this).attr('id');
-					$('.nav-tabs,.nav-pills').find('a[href^="#' + id + '"]').append(' <strong class="required text-danger">***</strong> ');
-
-                });
-            });
-		},
-	errorElement: "em",
-	errorPlacement: function errorPlacement(error, element) {
-		error.addClass("invalid-feedback");
-		if (element.prop("type") === "checkbox") {
-		error.insertAfter(element.parent("label"));
-		} else {
-		error.insertAfter(element);
-		}
-	},
-	highlight: function highlight(element) {
-		$(element)
-		.addClass("is-invalid")
-		.removeClass("is-valid");
-	},
-	unhighlight: function unhighlight(element) {
-		$(element)
-		.addClass("is-valid")
-		.removeClass("is-invalid");
-	},
-	rules: {
-		page_slug : {
-			required: true,
-			remote: {
-				url:  '{{ route('admin.ams.content.slug') }}',
-				data: {
-					id: function() {
-						return $('#asset_id').val()
-					}
-				}
-			}
-		}
-	}
-});
-
-
-$('#addChild').click(function () {
-        var idx = Number($('a.child-tab:last').attr('data-count'));
-        var counter = idx + 1;
-		var label = $('a.child-tab:last').attr('data-label') + ' ' + counter;
-
-		$('a.remove-child').show();
-		$('#addChild').hide();
-
-		var childPill = $('a.child-tab:last').clone();
-		childPill.attr('data-count', counter)
-		.attr('id', 'v-pills-' + counter + '-tab')
-		.attr('aria-controls' , 'v-pills-' + counter)
-		.attr('href', '#v-pills-' + counter )
-		.removeClass('active')
-		.text(label);
-
-		$('#child-pills').append(childPill);
-
-		var childTab = $('.child-tab-pane:last').clone();
-		childTab.attr('id','v-pills-' + counter)
-		.attr('ria-labelledby', 'v-' + counter + '-home-tab')
-		.removeClass('active');
-
-		childTab.find('h6').find('span').text($('a.child-tab:last').attr('data-label') + ' ' + counter);
-		childTab.find('h6').find('a')
-		.attr('data-target', '#v-pills-' + counter)
-		.attr('data-count', counter)
-		.text('Remove ' + $('a.child-tab:last').attr('data-label') + ' ' + counter);
-
-		childTab.find('.child-asset-form-container').empty()
-
-		$('.child-tab-pane:last').after(childTab);
-
-
-		childTab.find('.child-asset-form-container').load('{{ route('admin.ams.content.inject')}}?asset=' + $('a.child-tab:last').attr('data-type') + '&idx=' + counter, function() {
-			childPill.trigger("click");
-			childTab.find('.ams-htmleditor').trumbowyg();
-			$('#addChild').show();
-		});
-
-	return false
-});
-
-$(document).on("click", 'a.remove-child', function () {
-        var count = $(this).attr('data-count');
-        var tab = $(this).attr('data-target');
-        // if it is not green, do this
-        if (!$(this).hasClass('btn-success')) {
-            $(tab).find('div.child-mask').show();
-            $(tab).find('.asset-injector-input').attr('name', $(tab).find('.asset-injector-input').attr('name').replace('assetInjectionform', 'assetRemove'));
-            $('a.child-tab[data-count=' + count + ']').addClass('removed');
-            $(this).addClass('btn-success').removeClass('btn-danger').text($(this).text().replace('Remove', 'Restore'));
-            if ($('a.child-tab').not('.removed').length <= 1) {
-                $('a.remove-child').not('.btn-success').hide();
-            }
-        } else {
-            $(tab).find('div.child-mask').hide();
-            $(tab).find('.asset-injector-input').attr('name', $(tab).find('.asset-injector-input').attr('name').replace('assetRemove', 'assetInjectionform'));
-            $('a.child-tab[data-count=' + count + ']').removeClass('removed');
-            $(this).removeClass('btn-success').addClass('btn-danger').text($(this).text().replace('Restore', 'Remove'));
-            $('a.remove-child').show();
-        }
-        return false;
-    });
-
-	$(document).on("click", ".ams-upload-button, .ams-upload-filename", function() {
-		var target = $(this).data('target');
-		console.log(target, $(target), $(target).first());
-		$(target).trigger("click");
-	});
-
-	$(document).on('keydown', '.ams-upload-filename', function(e) {
-		e.preventDefault();
-		e.stopPropagation();
-		return false;
-	})
-
-	$(document).on("change", ':file', function() {
-		var file = this.files[0];
-		var data = new FormData();
-		var target = $(this).attr('id') + '_file';
-		data.append("file", file);
-		data.append("_token" ,"{{ csrf_token() }}");
-
-		$.ajax({
-    // Your server script to process the upload
-    url: '{{ route('admin.ams.content.file') }}',
-    type: 'POST',
-
-    // Form data
-    data: data,
-
-    // Tell jQuery not to process data or worry about content-type
-    // You *must* include these options!
-    cache: false,
-    contentType: false,
-    processData: false,
-
-    // Custom XMLHttpRequest
-    xhr: function () {
-      var myXhr = $.ajaxSettings.xhr();
-      if (myXhr.upload) {
-        // For handling the progress of the upload
-        myXhr.upload.addEventListener('progress', function (e) {
-          if (e.lengthComputable) {
-            $('progress').attr({
-              value: e.loaded,
-              max: e.total,
-            });
-          }
-        }, false);
-      }
-      return myXhr;
-    },
-	success: function(res) {
-		$('#' + target).val(res.file);
-	}
-  });
-	});
-
-
-
-	</script>
+{!! script('vendor/phpsa-datastore/js/admin.js') !!}
 @endpush
 
 @push('after-styles')
 {{  style('https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.17.0/ui/trumbowyg.min.css')  }}
-
+{{  style('vendor/phpsa-datastore/css/admin.css') }}
 @endpush

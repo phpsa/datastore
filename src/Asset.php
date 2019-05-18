@@ -12,6 +12,7 @@ use Phpsa\Datastore\Ams\DropdownAsset;
 use Phpsa\Datastore\Ams\FileAsset;
 use Phpsa\Datastore\Ams\HeadingAsset;
 use Phpsa\Datastore\Ams\HtmlAsset;
+use Phpsa\Datastore\Ams\IdentityAsset;
 use Phpsa\Datastore\Ams\ImageAsset;
 use Phpsa\Datastore\Ams\MetatextAsset;
 use Phpsa\Datastore\Ams\StringAsset;
@@ -39,10 +40,11 @@ class Asset{
 	const STRING             = StringAsset::class;
 	const TEXT               = TextAsset::class;
 	const HEADING            = HeadingAsset::class;
+	const IDENTITY           = IdentityAsset::class;
+
 
 	const FOLDER             = "amsFolderAsset";
 	const DATEPICKER         = "amsDatepickerAsset";
-	const IDENTITY           = "amsIdentityAsset";
 	const AUTOCALLBACK       = "amsAutocallbackAsset";      // ajax powered autocomplete backed on a callback
 	const AUTOCALLBACKADDER  = "amsAutocallbackadderAsset"; // ajax powered autocomplete backed on a callback
 	const AUTOCOMPLETE       = "amsAutocompleteAsset";
