@@ -38,6 +38,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 			// Assets
 			__DIR__.'/resources/js' => public_path('vendor/phpsa-datastore/js'),
 			__DIR__.'/resources/css' => public_path('vendor/phpsa-datastore/css'),
+			__DIR__.'/resources/img' => public_path('vendor/phpsa-datastore/img'),
+			__DIR__.'/resources/thumbs' => public_path('vendor/phpsa-datastore/thumbs'),
 		]);
 
 		$this->registerBladeHelpers();

@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Auth\User;
 
+use Intervention\Image\Facades\Image;
+
 Class Controller extends BaseController {
 
 
@@ -323,8 +325,30 @@ Class Controller extends BaseController {
 	}
 
 	public function file(Request $request) {
-		$path = Storage::putFile('public', $request->file('file'), 'public');
-		return response()->json(["file" => $path]);
+		$this->validate($request, [
+            'file' => 'image|required|mimes:jpeg,png,jpg,gif,svg'
+		 ]);
+
+		 $originalImage= $request->file('file');
+
+		 $t = time();
+		 $filename = Str::slug($t.$originalImage->getClientOriginalName(),".");
+
+
+		if(!is_dir(public_path().'/vendor/phpsa-datastore/thumbs')){
+			mkdir(public_path().'/vendor/phpsa-datastore/thumbs', 0755, true);
+		}
+
+
+		 $thumbnailImage = Image::make($originalImage);
+		 $thumbnailPath = public_path().'/vendor/phpsa-datastore/img/';
+		 $originalPath = public_path().'/vendor/phpsa-datastore/thumbs/';
+		 $thumbnailImage->save($originalPath.$filename);
+		 $thumbnailImage->resize(150,150);
+		 $thumbnailImage->save($thumbnailPath.$filename);
+
+
+		return response()->json(["file" => $filename]);
 	}
 
 
