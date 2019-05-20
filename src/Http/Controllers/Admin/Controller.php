@@ -326,6 +326,23 @@ Class Controller extends BaseController {
 
 	public function file(Request $request) {
 		$this->validate($request, [
+            'file' => 'required'
+		 ]);
+
+		 $originalFile= $request->file('file');
+
+		 $t = time();
+		 $filename = Str::slug($t.$originalImage->getClientOriginalName(),".");
+
+		 $path = $request->file('file')->storeAs(
+			'public', $filename
+		);
+
+		return response()->json(["file" => $filename]);
+	}
+
+	public function image(Request $request) {
+		$this->validate($request, [
             'file' => 'image|required|mimes:jpeg,png,jpg,gif,svg'
 		 ]);
 
@@ -350,6 +367,7 @@ Class Controller extends BaseController {
 
 		return response()->json(["file" => $filename]);
 	}
+
 
 
 	public function indentityAutocomplete(Request $request){

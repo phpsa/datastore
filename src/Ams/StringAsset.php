@@ -12,4 +12,3 @@ class StringAsset extends Asset {
         return '<span>' . $data['value'] . '</span> STRING';
     }
 }
-?>

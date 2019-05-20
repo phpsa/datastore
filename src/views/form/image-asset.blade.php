@@ -15,6 +15,7 @@
 			?>
 				<div class="card ams-image-upload-card">
 					<img data-rel="{{$key}}_file" data-placeholder="{{ asset('vendor/phpsa-datastore/thumbs/noimage.jpg') }}" src="{{ $src }}" class="card-img-top img-fluid" />
+					<progress data-for="{{$key}}_file"></progress>
 					<div class="btn-group" role="group" >
 							<button class="btn btn-primary ams-upload-button" data-target="{{ $key }}" type="button" value="Upload" type="button"><i class="fa fa-upload"></i></button>
 							<button class="btn btn-danger ams-upload-clear-button" data-target="{{ $key }}" type="button" value="Upload" type="button"><i class="fa fa-trash"></i></button>

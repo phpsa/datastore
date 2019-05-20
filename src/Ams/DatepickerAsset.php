@@ -1,14 +1,14 @@
 <?php
+
 namespace Phpsa\Datastore\Ams;
 use Phpsa\Datastore\Asset;
 
-class TextAsset extends Asset {
+class DatePickerAsset extends Asset {
 
-    public $type = TextAsset::class;
+    public $type = DatePickerAsset::class;
     public $namespace = 'property';
 
     public static function html($data) {
-        return '<p>' . $data['value'] . '</p>';
+        return '<span>' . $data['value'] . '</span>';
     }
-
 }

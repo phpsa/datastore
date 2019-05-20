@@ -13,4 +13,3 @@ class MetatextAsset extends Asset {
     }
 
 }
-?>

@@ -30,5 +30,3 @@ class RobotsTxtAsset extends Asset{
 	}
 
 }
-
-?>

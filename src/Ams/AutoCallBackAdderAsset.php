@@ -3,9 +3,9 @@
 namespace Phpsa\Datastore\Ams;
 use Phpsa\Datastore\Asset;
 
-class DropdownAsset extends Asset {
+class AutoCallBackAdderAsset extends Asset {
 
-    public $type = DropdownAsset::class;
+    public $type = AutoCallBackAdderAsset::class;
     public $namespace = 'property';
 
     public static function html($data) {

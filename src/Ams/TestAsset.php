@@ -58,5 +58,3 @@ class TestAsset extends Asset {
 	}
 
 }
-
-?>

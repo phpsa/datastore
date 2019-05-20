@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\View;
 
 use Phpsa\Datastore\DatastoreException;
 
+use Phpsa\Datastore\Ams\AutoCallBackAdderAsset;
+use Phpsa\Datastore\Ams\AutoCallBackAsset;
+use Phpsa\Datastore\Ams\AutoCompleteAsset;
 use Phpsa\Datastore\Ams\BooleanAsset;
+use Phpsa\Datastore\Ams\DatepickerAsset;
 use Phpsa\Datastore\Ams\DropdownAsset;
 use Phpsa\Datastore\Ams\FileAsset;
 use Phpsa\Datastore\Ams\HeadingAsset;
@@ -31,23 +35,24 @@ class Asset{
 	const ASSET              = "asset";
 	const PROP               = "property";
 
+
+	const AUTOCALLBACKADDER  = AutoCallBackAdderAsset::class; // ajax powered autocomplete backed on a callback
+	const AUTOCALLBACK       = AutoCallBackAsset::class;      // ajax powered autocomplete backed on a callback
+	const AUTOCOMPLETE       = AutoCompleteAsset::class;
 	const BOOL               = BooleanAsset::class;
+	const DATEPICKER         = DatepickerAsset::class;
 	const DROPDOWN           = DropdownAsset::class;
 	const FILE               = FileAsset::class;
+	const HEADING            = HeadingAsset::class;
 	const HTML               = HtmlAsset::class;
+	const IDENTITY           = IdentityAsset::class;
 	const IMG                = ImageAsset::class;
 	const METATEXT			 = MetatextAsset::class;
 	const STRING             = StringAsset::class;
 	const TEXT               = TextAsset::class;
-	const HEADING            = HeadingAsset::class;
-	const IDENTITY           = IdentityAsset::class;
 
 
 	const FOLDER             = "amsFolderAsset";
-	const DATEPICKER         = "amsDatepickerAsset";
-	const AUTOCALLBACK       = "amsAutocallbackAsset";      // ajax powered autocomplete backed on a callback
-	const AUTOCALLBACKADDER  = "amsAutocallbackadderAsset"; // ajax powered autocomplete backed on a callback
-	const AUTOCOMPLETE       = "amsAutocompleteAsset";
 
 	/**
 	 * help tips ypou may want to include properties

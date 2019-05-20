@@ -16,4 +16,3 @@ class BooleanAsset extends Asset {
         return  !empty($data['value']) ? 'on' : 'off';
     }
 }
-?>

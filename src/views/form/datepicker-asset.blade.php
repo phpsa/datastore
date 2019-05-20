@@ -1,13 +1,13 @@
 <div class="row form-group">
-
-		{{ html()->label($data['name'])->class('col-md-2 form-control-label')->for('asset_' . $data['key']) }}
+	<?php $key = isset($data['unique_id']) ? $data['key'] . '_' . $data['unique_id'] : $data['key'] ; ?>
+		{{ html()->label($data['name'])->class('col-md-2 form-control-label')->for($key) }}
 		<div class="col-md-10">
 
 			<?php $input = html()
-			->select()
-			->options($data['options'])
-			->attribute('id', $data['key'])
-			->class('form-control');
+			->text()
+			->type('date')
+			->attribute('id', $key)
+			->class('form-control datepicker');
 			if($data['required']){
 				$input = $input->required();
 			}
@@ -16,6 +16,7 @@
 			}else{
 				$name = $data['key'];
 			}
+
 			$name .= (isset($multiform) && $multiform) ? '[]' : '';?>
 
 			{{ $input->name($name)->value(old($name, !empty($data['value']) ? $data['value'] : NULL)) }}
