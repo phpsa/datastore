@@ -3,10 +3,13 @@
 
 		{{ html()->label($data['name'])->class('col-md-2 form-control-label')->for($key) }}
 		<div class="col-md-10">
-
+<?php
+$callback = is_array($data['callback']) ? $data['callback'] : ['url' => $data['callback']];
+	?>
 			<?php $input = html()
 			->text()
-			->attribute('data-url', $data['callback'])
+			->attribute('data-url', $callback['url'])
+			->attribute('data-type', !empty($callback['method']) ? $callback['method'] : 'GET')
 			->attribute('data-limit', '1')
 			->attribute('id', $key)
 			->class('form-control autoinput');

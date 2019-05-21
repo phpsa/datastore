@@ -389,4 +389,68 @@ Class Controller extends BaseController {
 		return response()->json($results);
 	}
 
+
+
+	//Testing CallbacksAuth::attempt([
+		public function getTypeData(Request $request) {
+			$term = $request->input('term');
+			$q = $request->input('q');
+
+        if ($term) {
+            $vars = array();
+            $type = null;
+
+            //determine what to look for
+            switch ($q) {
+                case "checkbox":
+                    $type = Phpsa\Datastore\Ams\BooleanAsset::class;
+                    break;
+
+                case "radio":
+                    $type = Phpsa\Datastore\Ams\BooleanAsset::class;
+                    break;
+
+                case "textfield":
+                    $type = Phpsa\Datastore\Ams\BooleanAsset::class;
+                    break;
+
+                case "textarea":
+                    $type = Phpsa\Datastore\Ams\BooleanAsset::class;
+                    break;
+
+                case "fieldset":
+                    $type = Phpsa\Datastore\Ams\BooleanAsset::class;
+                    break;
+
+                default:
+                    return false;
+            }
+
+
+			$query = DatastoreModel::select('value as label, id as value')
+			->where('value','like','%' . $term . '%')
+			->where('type', $type);
+			if($q == 'fieldset'){
+				$query->order_by('value');
+			}
+			$data = $query->get();
+			dd($data);
+			return response()->json($data ? $data : []);
+
+			//db query
+			if ($q == 'fieldset') {
+				$sql = "select value as label, id as value from datastore where value like :a AND type = :t group by value";
+			} else {
+				$sql = "select value as label, id as value from datastore where value like :a AND type = :t";
+			}
+            $vars[':a'] = '%' . $term . '%';
+            $vars[':t'] = $type;
+
+            $data = db::getAll($sql, $vars);
+            echo json_encode($data);
+            exit;
+        }
+        return false;
+    }
+
 }

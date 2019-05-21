@@ -5,12 +5,12 @@
 
 			<div class="input-group">
 					<div class="input-group-prepend">
-							<button class="btn btn-primary ams-upload-button" data-target="#{{ $key }}" type="button" value="Upload" type="button">Upload</button>
+							<button class="btn btn-primary ams-upload-button" data-target="{{ $key }}" type="button" value="Upload" type="button">Upload</button>
 						</div>
 
 			<?php $input = html()
 			->text()
-			->attribute('data-target', "#{$key}")
+			->attribute('data-target', "{$key}")
 			->attribute('id', $key . '_file')
 			->placeholder('Choose File')
 			->class('form-control ams-upload-filename');

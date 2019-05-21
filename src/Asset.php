@@ -20,6 +20,7 @@ use Phpsa\Datastore\Ams\IdentityAsset;
 use Phpsa\Datastore\Ams\ImageAsset;
 use Phpsa\Datastore\Ams\MetatextAsset;
 use Phpsa\Datastore\Ams\StringAsset;
+use Phpsa\Datastore\Ams\SubHeadingAsset;
 use Phpsa\Datastore\Ams\TextAsset;
 
 /**
@@ -49,6 +50,7 @@ class Asset{
 	const IMG                = ImageAsset::class;
 	const METATEXT			 = MetatextAsset::class;
 	const STRING             = StringAsset::class;
+	const SUBHEADING         = SubHeadingAsset::class;
 	const TEXT               = TextAsset::class;
 
 

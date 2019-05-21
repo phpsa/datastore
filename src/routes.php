@@ -21,6 +21,9 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'admin.ams.
 	Route::get('ams/edit/{asset}/{id}', [AdminController::class, 'edit'])->name('content.update');
 	Route::post('ams/save/{asset}', [AdminController::class, 'save'])->name('content.save');
 	Route::delete('ams/delete/{id}', [AdminController::class, 'destroy'])->name('content.destroy');
+
+	//test getTypeData
+	Route::get('/ams/gettypedata', [AdminController::class, 'getTypeData'])->name('content.test.typedata');
 });
 
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.ams.', 'prefix' => $prefix ], function () {
@@ -32,6 +35,9 @@ Route::group(['namespace' => 'Frontend', 'as' => 'frontend.ams.', 'prefix' => $p
 
 	//store our comments as they are posted
 	Route::post('comments', [CommentsController::class, 'store'])->name('comments.store');
+
+
+	//getTypeData
 });
 
 

@@ -11,22 +11,21 @@
 			{{ html()->label($data['name'])->class('col-md-2 form-control-label')->for($key) }}
 			<div class="col-md-10">
 
-				<?php $input = html()
-				->text()
-				->attribute('data-url', route('admin.ams.autocomplete.identity'))
-				->attribute('data-limit', '1')
-				->attribute('data-target', $key)
-				->class('form-control autoinput');
-
-				if($asset_classname){
+				<?php 	if($asset_classname){
 					$name = 'assetInjectionform[' . $asset_classname . '][' . $data['unique_id'] . '][' . $data['key'] . ']';
 				}else{
 					$name = $data['key'];
 				}
-
 				$name .= (isset($multiform) && $multiform) ? '[]' : '';?>
 
-				{{ $input->value(old($name, !empty($user_label) ? $user_label : NULL)) }}
+			{{ $input = html()
+				->text()
+				->attribute('data-url', route('admin.ams.autocomplete.identity'))
+				->attribute('data-type',  'GET')
+				->attribute('data-limit', '1')
+				->attribute('data-target', $key)
+				->class('form-control autoinput')
+				->value(old($name, !empty($user_label) ? $user_label : NULL)) }}
 				<input <?php echo $data['required'] ? 'required="required"' : ''; ?> class="asset_identity_id" id="{{ $key }}" type="hidden" name="{{ $name }}" value="{{ $data['value'] }}" />
 
 				<?php if ($data['help']): ?>
