@@ -258,7 +258,7 @@ var amsSettings = {
 		slug: '{{ route('admin.ams.content.slug')}}',
 		inject: '{{ route('admin.ams.content.inject')}}',
 		file: '{{ route('admin.ams.content.file') }}',
-		image: '{{ route('admin.ams.content.file') }}',
+		image: '{{ route('admin.ams.content.image') }}',
 		thumbs: '{{ asset('vendor/phpsa-datastore/thumbs/') }}'
 	}
 }

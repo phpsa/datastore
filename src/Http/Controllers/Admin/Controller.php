@@ -332,7 +332,7 @@ Class Controller extends BaseController {
 		 $originalFile= $request->file('file');
 
 		 $t = time();
-		 $filename = Str::slug($t.$originalImage->getClientOriginalName(),".");
+		 $filename = Str::slug($t.$originalFile->getClientOriginalName(),".");
 
 		 $path = $request->file('file')->storeAs(
 			'public', $filename
