@@ -497,7 +497,6 @@ class Datastore{
 		$vars				 = $this->export();
 		$vars['_unique_id']	 = uniqid();
 
-
 		// we also want to know what asset this property belongs to
 		$output = Helpers::callStatic($this->type, 'render', array($vars, $template));
 		if (!$output)

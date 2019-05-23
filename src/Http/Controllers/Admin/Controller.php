@@ -365,7 +365,10 @@ Class Controller extends BaseController {
 		 $thumbnailPath = public_path().'/vendor/phpsa-datastore/img/';
 		 $originalPath = public_path().'/vendor/phpsa-datastore/thumbs/';
 		 $thumbnailImage->save($originalPath.$filename);
-		 $thumbnailImage->resize(150,150);
+
+		 $thumbnailImage->resize(150,150, function ($constraint) {
+			$constraint->aspectRatio();
+		});
 		 $thumbnailImage->save($thumbnailPath.$filename);
 
 

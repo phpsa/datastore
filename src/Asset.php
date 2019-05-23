@@ -356,17 +356,22 @@ class Asset{
 	 * Renders the asset's markup
 	 *
 	 * @param array $args
-	 * @param string $template
+	 * @param string $params
 	 * @return string
 	 * * Should most likely parse throug to blade or laravel somewhere
 	 */
-	public static function render($args = [], $template = false)
+	public static function render($args = [], $params = false)
 	{
-		if (!$template)
-		{
-			$template = self::getFilename();
+
+		if(is_string($params)){
+			$template = $params;
+		} else {
+			$template = is_array($params) && !empty($params['view']) ? $params['view'] : self::getFilename();
 		}
-		$data['data'] = $args;
+
+		$params['assetClass'] = get_called_class();
+		$args['params'] = $params;
+
 		return View::exists($template) ? View::make($template, $args)->render() : static::html($args);
 	}
 
