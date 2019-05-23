@@ -9,6 +9,9 @@ class AutoCallBackAsset extends Asset {
     public $namespace = 'property';
 
     public static function html($data) {
-        return '<span>' . $data['value'] . '</span>';
-    }
+		$content = explode('|', $data['meta']);
+        return '<span>' . $content[1] . '</span>';
+	}
+
+
 }

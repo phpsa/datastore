@@ -11,12 +11,16 @@ class TestAsset extends Asset {
 	public $name = 'Test Content';
 	public $shortname = 'Tests';
 
-	public $children = ContentAsset::class;
+	//public $children = ContentAsset::class;
 
-	public $accept = ItemAsset::class;
+	//public $accept = ItemAsset::class;
 	public $accept_limit = "-1";
 
 	public $max_instances = 5;
+
+	public $private = false;
+
+	public $meta_description = "this is my default meta descriptoin";
 
 	/*
 	@TODO's
@@ -32,9 +36,10 @@ class TestAsset extends Asset {
 	public $properties = array(
 		'title' => array(
 			'name' => 'String',
-			'type' => self::STRING
+			'type' => self::STRING,
+			'required' => false
 		),
-		'intro' => array(
+		/*'intro' => array(
 			'name' => 'Text',
 			'type' => self::TEXT
 		),
@@ -79,17 +84,29 @@ class TestAsset extends Asset {
 			'name' => 'AutoComplete',
 			'type' => self::AUTOCOMPLETE,
 			'callback' => '/admin/ams/autocomplete/identity',
+			'required' => false
 		],
 		'autocp2' => [
 			'name' => 'AutoComplete - Post',
 			'type' => self::AUTOCOMPLETE,
 			'callback' => ['url'=> '/admin/ams/autocomplete/identity', 'method' => 'post'],
-		],
+			'required' => false
+		],*/
 		'autoCallback' => [
 			'name' => 'AutoCallBack',
 			'type' => self::AUTOCALLBACK,
-			'options' => 'checkbox, radio, textarea, textfield',
-			'callback' => '/admin/ams/autocomplete/identity', // holds the callback route components
+			'options' => [
+				'checkbox' => 'Checkbox', 'radio' => 'Radio', 'textarea' => 'TextArea', 'textfield' => 'textField',
+			],
+			'callback' => ['url' => '/admin/ams/gettypedata']  // holds the callback route components
+		],
+		'autoCallbackAd' => [
+			'name' => 'AutoCallBackAdd',
+			'type' => self::AUTOCALLBACKADDER,
+			'options' => [
+				'checkbox' => 'Checkbox', 'radio' => 'Radio', 'textarea' => 'TextArea', 'textfield' => 'textField',
+			],
+			'callback' => ['url' => '/admin/ams/gettypedata'], // holds the callback route components
 		]
 	);
 

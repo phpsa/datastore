@@ -62,7 +62,7 @@ class Datastore{
 
 			foreach ($this->__model->toArray() as $k => $v)
 			{
-				if($k === 'options'){
+				if($k === 'options' || $k === 'meta'){
 					$v = json_decode($v, true);
 				}
 				if(in_array($k, ['created_at','updated_at','date_start','date_end'])){
@@ -96,6 +96,23 @@ class Datastore{
 		$datastore = new self($id);
 		$datastore->setAssetType($datastore->type);
 		return $datastore;
+	}
+
+	public static function find($id){
+		if(!is_array($id)){
+			if(is_object($id)){
+				return self::getAssetById($id->id);
+			}
+			return self::getAssetById($id);
+		}
+
+		if(is_array($id)){
+			$assets = [];
+			foreach($id as $i){
+				$assets[] = self::getAssetById($i);
+			}
+			return $assets;
+		}
 	}
 
 	/**
@@ -400,11 +417,8 @@ class Datastore{
 
 		$class	 = new ReflectionClass($asset->__asset);
 		$props	 = $class->getProperties(ReflectionProperty::IS_PUBLIC);
-
-
 		$record = $asset->__model;
 		$record->datastore_id = $pid;
-
 
 		foreach ($props as $prop)
 		{
@@ -418,7 +432,6 @@ class Datastore{
 		{
 			$record->status = isset($record->{$asset->__status_equals})? $record->{$asset->__status_equals} : $this->prop($this->__status_equals);
 		}
-
 		if ($asset->__start_date)
 		{
 			$record->start_date = isset($record->{$asset->__start_date})? $record->{$asset->__start_date} : $this->prop($this->__start_date);
@@ -428,13 +441,10 @@ class Datastore{
 			$record->end_date = isset($record->{$asset->__end_date})? $record->{$asset->__end_date} : $this->prop($this->__end_date);
 		}
 
-		if( ! empty($record->options) && is_array($record->options))
-		{
-			$record->options = json_encode($record->options);
-		}
+		$record->options = json_encode($record->options);
+		$record->meta = json_encode($record->meta);
 
 		$record->save();
-
 
 		if ($asset->__asset_properties)
 		{
@@ -808,7 +818,7 @@ class Datastore{
 		$messages = array();
 		foreach ($this->__asset->properties as $key => $property)
 		{
-			if(empty($property['required']) || $property['required'] === true)
+			if($property['type'] !== \Phpsa\Datastore\Ams\AutoCallBackAdderAsset::class && (empty($property['required']) || $property['required'] === true) )
 			{
 				$rules = empty($property['validation_rules']) ? 'required' : $property['validation_rules'];
 				if(!empty($property['validation_messages'])){
@@ -824,6 +834,7 @@ class Datastore{
 		if ($config)
 		{
 			$validator = Validator::make($request, $config, $messages);
+
 			if($validator->fails()){
 				throw new ValidationException($validator);
 			}

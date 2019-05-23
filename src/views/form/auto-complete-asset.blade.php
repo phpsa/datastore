@@ -14,6 +14,10 @@ $callback = is_array($data['callback']) ? $data['callback'] : ['url' => $data['c
 			->attribute('id', $key)
 			->class('form-control autoinput');
 
+			if($data['required']){
+				$input = $input->required();
+			}
+
 			if($asset_classname){
 				$name = 'assetInjectionform[' . $asset_classname . '][' . $data['unique_id'] . '][' . $data['key'] . ']';
 			}else{

@@ -266,6 +266,8 @@ var amsSettings = {
 {!! script('https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.17.0/trumbowyg.min.js') !!}
 {!! script('https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.17.0/plugins/cleanpaste/trumbowyg.cleanpaste.min.js') !!}
 {!! script('https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.17.0/plugins/base64/trumbowyg.base64.min.js') !!}
+{!! script('https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js') !!}
+{!! script('https://cdn.jsdelivr.net/npm/jquery-sortablejs@1.0.1/jquery-sortable.min.js') !!}
 {!! script('vendor/phpsa-datastore/js/admin.js') !!}
 @endpush
 

@@ -114,3 +114,19 @@ progress[value]::-moz-progress-bar {
 	display: block;
 	text-indent: -9999px;
 }
+
+.frmmsg.note{display:none}
+.ams-menu-item-widget {height:auto}
+
+i.handle {
+		cursor: grab;
+		font-size: 125%;
+	}
+i.handle + span {
+	margin-left: 15px;
+}
+
+	.ghost {
+		opacity: .5;
+		background: #C8EBFB;
+	  }

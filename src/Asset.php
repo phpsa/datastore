@@ -6,7 +6,8 @@ use ReflectionClass;
 use Illuminate\Support\Facades\View;
 
 use Phpsa\Datastore\DatastoreException;
-
+use Phpsa\Datastore\Datastore;
+use Phpsa\Datastore\Models\DatastorePages;
 use Phpsa\Datastore\Ams\AutoCallBackAdderAsset;
 use Phpsa\Datastore\Ams\AutoCallBackAsset;
 use Phpsa\Datastore\Ams\AutoCompleteAsset;
@@ -219,12 +220,12 @@ class Asset{
 	 * generate the route for this asset
 	 * Overwrite this in your own assets to generate your own route
 	 */
-	public static function route($record, $path = null){
-		if(null === $path){
-			$path = 'frontend.ams.page.slug';
+	public static function route(DatastorePages $record, $route = null){
+		if(null === $route){
+			$route = 'frontend.ams.page.slug';
 		}
 		$page = $record->page;
-		return route($path, ['slug' => $page->slug]);
+		return route($route, ['slug' => $page->slug]);
 	}
 
 	/**
@@ -234,6 +235,16 @@ class Asset{
 	public static function about()
 	{
 		throw new DatastoreException("All Assets require an about method to describe them");
+	}
+
+	/**
+	 * this is an overridable method used to create the value equals based on the field to use
+	 * @param string $value
+	 * @return string
+	 */
+	public static function valueEquals($value)
+	{
+		return $value;
 	}
 
 	/**
@@ -293,7 +304,6 @@ class Asset{
 		return $props;
 	}
 
-
 	/**
 	 * Returns the Class's filename
 	 * @return string
@@ -320,8 +330,6 @@ class Asset{
 		return Helpers::splitByCaps($ns, false, "-") . '::' . $type . '.' . Helpers::splitByCaps($className, false, "-");
 
 	}
-
-
 
 	/**
 	 * Creates the asset form
@@ -382,16 +390,6 @@ class Asset{
 	{
 		$ref = new ReflectionClass($className);
 		return $ref->newInstanceArgs($args);
-	}
-
-	/**
-	 * this is an overridable method used to create the value equals based on the field to use
-	 * @param string $value
-	 * @return string
-	 */
-	public static function valueEquals($value)
-	{
-		return $value;
 	}
 
 	/**

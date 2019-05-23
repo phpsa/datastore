@@ -217,11 +217,15 @@ Class Controller extends BaseController {
 			}
 		}
 
+
+
 		$id = $newAsset->store();
+
 
 		// check for multiforms
 		if (isset($form['assetInjectionform']))
 		{
+			//dd($form['assetInjectionform']);exit;
 			foreach ($form['assetInjectionform'] as $masset => $mdata)
 			{
 				foreach ($mdata as $childform)
@@ -403,7 +407,7 @@ Class Controller extends BaseController {
             //determine what to look for
             switch ($q) {
                 case "checkbox":
-                    $type = Phpsa\Datastore\Ams\BooleanAsset::class;
+                    $type = \Phpsa\CamsGallery\Ams\Gallery\ImageAsset::class;
                     break;
 
                 case "radio":
@@ -427,16 +431,14 @@ Class Controller extends BaseController {
             }
 
 
-			$query = DatastoreModel::select('value as label, id as value')
-			->where('value','like','%' . $term . '%')
+			$query = DatastoreModel::where('value','like','%' . $term . '%')
 			->where('type', $type);
 			if($q == 'fieldset'){
 				$query->order_by('value');
 			}
-			$data = $query->get();
-			dd($data);
-			return response()->json($data ? $data : []);
-
+			$data = $query->get(['value as label', 'id as value']);
+			return response()->json($data );
+/*
 			//db query
 			if ($q == 'fieldset') {
 				$sql = "select value as label, id as value from datastore where value like :a AND type = :t group by value";
@@ -448,9 +450,9 @@ Class Controller extends BaseController {
 
             $data = db::getAll($sql, $vars);
             echo json_encode($data);
-            exit;
+            exit;*/
         }
-        return false;
+        return response()->json( []);
     }
 
 }

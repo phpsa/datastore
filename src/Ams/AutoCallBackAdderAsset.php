@@ -9,6 +9,12 @@ class AutoCallBackAdderAsset extends Asset {
     public $namespace = 'property';
 
     public static function html($data) {
-        return '<span>' . $data['value'] . '</span>';
+		$strings = [];
+
+		foreach($data['meta'] as $k){
+			$parts = explode("|", $k);
+			$strings[] = $parts[1];
+		}
+        return '<span>' . implode(", ", $strings) . '</span>';
     }
 }
