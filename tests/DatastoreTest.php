@@ -30,7 +30,6 @@ class DatastoreTest extends TestCase
 	public function testCalledClass(){
 		$asset = ContentAsset::getAssetView();
 		$this->assertEquals('phpsa-datastore::render.content-asset', $asset);
-
 	}
 
 	public function testMapping()

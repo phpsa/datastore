@@ -4,6 +4,10 @@ namespace Phpsa\Datastore\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Phpsa\Datastore\Models\Datastore as DatastoreModel;
+/**
+  * @property Object $item
+  */
+
 class DatastoreDatastore extends Model
 {
 	//
@@ -37,7 +41,8 @@ class DatastoreDatastore extends Model
 		return $this->datastore->datastore;
 	}
 
-	public function prop($key){
+	public function prop($key)
+	{
 		return $this->item->prop($key);
 	}
 

@@ -2,7 +2,7 @@
 
 namespace Phpsa\Datastore\Models;
 
-use Phpsa\Datastore\Datastore;
+use Phpsa\Datastore\Datastore as DatastoreCore;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +20,7 @@ class DatastorePages extends Model
 	];
 
 	public function getDatastoreAttribute(){
-		return $this->id ? Datastore::getAssetById($this->asset) : null;
+		return $this->id ? DatastoreCore::getAssetById($this->asset) : null;
 	}
 
 }

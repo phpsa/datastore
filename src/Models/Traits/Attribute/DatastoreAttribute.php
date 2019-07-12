@@ -53,12 +53,6 @@ trait DatastoreAttribute
 	}
 
 
-/*	public function getParentsAttribute(){
-		$rows = self::find(1);
-		$data['parents'] = $this->db->query('select distinct(type), name, accept_limit from datastore where accept LIKE ?', array('%' . $newasset->type . '%'))->result_array();
-
-	}*/
-
 	public function getDatastoreAttribute(){
 		if($this->id){
 			return DatastoreFactory::getAsset($this->type, $this->id);

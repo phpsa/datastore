@@ -2,13 +2,17 @@
 
 namespace Phpsa\Datastore\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Phpsa\Datastore\Models\DatastoreComments;
+
 
 class CommentsController extends Controller
 {
+	use  ValidatesRequests;
+
     /**
      * Store a newly created resource in storage.
      *

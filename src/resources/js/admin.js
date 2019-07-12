@@ -140,7 +140,9 @@ $('input.autoinput').each(function() {
     //Autocomplete Slug
 var timedCall = false;
 $(document).on('keyup', '#pageTitle', function() {
-	if(amsSettings.editing === false) return;
+	if(amsSettings.editing === false) {
+		return;
+	}
 	if (timedCall) {
 		clearTimeout(timedCall);
 	}

@@ -15,11 +15,20 @@ use Validator;
 use ReflectionClass;
 use ReflectionProperty;
 
+
+/**
+  * @property mixed $meta_keywords
+  * @property mixed $meta_description
+  * @property mixed $page_js
+  * @property mixed $page_css
+  */
+
+
 class Datastore{
 
 	protected $__asset				 = false;
-	protected $__asset_properties	 = false;
-	protected $__value_equals		 = false;
+	protected $__asset_properties	 = [];
+	protected $__value_equals		 = null;
 	protected $__status_equals		 = false;
 	protected $__start_date			 = null;
 	protected $__end_date			 = null;
@@ -38,7 +47,7 @@ class Datastore{
 
 	/**
 	 * The current record id
-	 * @var record id
+	 * @var int id
 	 */
 	public $id = 0;
 
@@ -570,9 +579,9 @@ class Datastore{
 	 * @param string $prop
 	 * @param string $template
 	 * @param array $_prop
-	 * @return type
+	 * @return string
 	 */
-	public function returnForm($prop, $template = false, $_prop)
+	public function returnForm($prop, $template = false, $_prop) :string
 	{
 
 		if (isset($this->__asset_properties[$prop]['temp']))
@@ -766,9 +775,9 @@ class Datastore{
 
 	/**
 	 * gets the form necessary for building the styling and behaviour data
-	 * @return string
+	 * @return string|null
 	 */
-	public function getDeveloperForm() :string
+	public function getDeveloperForm()
 	{
 		$output = null;
 		// must be a parent asset
@@ -856,7 +865,7 @@ class Datastore{
 	 */
 	public function children() :array
 	{
-		$return = false;
+		$return = [];
 
 		if ($this->ownDatastore)
 		{
@@ -943,11 +952,11 @@ class Datastore{
 	/**
 	 * gets the avaialble status options
 	 *
-	 * @return array|bool
+	 * @return array
 	 */
-	public function statusOptions()
+	public function statusOptions(): array
 	{
-		return ($this->__status_equals) ? $this->__asset_properties[$this->__status_equals]['temp']->options : false;
+		return ($this->__status_equals) ? $this->__asset_properties[$this->__status_equals]['temp']->options : [];
 	}
 
 	/**
@@ -958,7 +967,7 @@ class Datastore{
 	public function getStatusValue() :string
 	{
 		$options = $this->statusOptions();
-		return ($options && Helpers::isAssocArray($options) && isset($options[$this->status])) ? $options[$this->status] : $this->status;
+		return (! empty($options) && Helpers::isAssocArray($options) && isset($options[$this->status])) ? $options[$this->status] : $this->status;
 	}
 
 	/**
@@ -1041,9 +1050,9 @@ class Datastore{
 	/**
 	 * gets the title of the asset
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	public function getTitleField() :string
+	public function getTitleField() :?string
 	{
 		return $this->__value_equals;
 	}

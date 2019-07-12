@@ -2,7 +2,12 @@
 
 namespace Phpsa\Datastore\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+
 use Phpsa\Datastore\Datastore;
 use Phpsa\Datastore\Asset;
 use Phpsa\Datastore\Helpers;
@@ -13,6 +18,8 @@ use Phpsa\Datastore\Models\Datastore as DatastoreModel;
 use Phpsa\Datastore\Models\DatastorePages;
 
 Class DatastoreController extends Controller {
+
+	use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 	/**
 	 * @var DatastoreRepository
@@ -39,7 +46,7 @@ Class DatastoreController extends Controller {
 	 *
 	 * @return string|null
 	 */
-	protected function canViewAll($status = 'published') :string
+	protected function canViewAll($status = 'published')
 	{
 		$user = auth()->user();
 		return $user && $user->can('manage datastore') ? null : $status;

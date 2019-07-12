@@ -4,7 +4,7 @@ namespace Phpsa\Datastore\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Auth\User;
+
 
 class DatastoreComments extends Model
 {
@@ -27,7 +27,8 @@ class DatastoreComments extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+		$user = config('auth.providers.users.model');
+        return $this->belongsTo($user);
     }
 
     /**
