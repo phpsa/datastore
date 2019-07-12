@@ -23,21 +23,35 @@ Class DatastoreController extends Controller {
      * UserController constructor.
      *
      * @param DatastoreRepository $datastoreRepository
+	 * @todo get rid of these datastoreRepository and make use of the mode only
      */
     public function __construct(DatastoreRepository $datastoreRepository)
     {
         $this->datastoreRepository = $datastoreRepository;
 	}
 
-	protected function iCan($permission, $then, $else){
+	/**
+	 * Checks if the current user can manage else set status column
+	 * this allows us to filter out unpublished items to public but allow admins to
+	 * view unpublished items
+	 *
+	 * @param string $permission
+	 *
+	 * @return string|null
+	 */
+	protected function canViewAll($status = 'published') :string
+	{
 		$user = auth()->user();
-		return $user && $user->can($permission) ? $then : $else;
+		return $user && $user->can('manage datastore') ? null : $status;
 	}
 
-	protected function canViewAll($status = 'published'){
-		return $this->iCan('manage datastore', null , $status);
-	}
-
+	/**
+	 * gets page based on the slug
+	 *
+	 * @param string $slug
+	 *
+	 * @return DatastorePages
+	 */
 	protected function getPageBySlug($slug){
 		$page = DatastorePages::where('slug', $slug)->first();
 		if(!$page){
@@ -53,6 +67,13 @@ Class DatastoreController extends Controller {
 		return $page;
 	}
 
+	/**
+	 * Gets the page view based off of the slug passed in
+	 *
+	 * @param string $slug
+	 *
+	 * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+	 */
 	public function page($slug){
 
 		$page = $this->getPageBySlug($slug);
@@ -74,98 +95,5 @@ Class DatastoreController extends Controller {
 	public function articleByAuthor($author_id, $slug){
 		$this->datastoreRepository->paginateSearchProp('author', $author_id, Phpsa\Datastore\Ams\Article\ItemAsset::class, $this->canViewAll('published'));
 	}
-
-    public function ___tests()
-    {
-
-		//ok we need a list of objects we can usse::
-
-		// $assets = Helpers::getAssetList(true);
-
-		// echo '<pre>';
-		// print_r($assets);
-		// exit;
-		$tester = Datastore::getAsset(ContentAsset::class);
-
-		$tester->prop('title', 'Moe Title');
-        $tester->prop('content', '<p>Rhoncus hac aliquam aliquam! Et mauris, et quis platea ut elementum natoque sit natoque lectus augue integer aliquam porta rhoncus nec, cursus diam a parturient augue ut! Tincidunt eros urna lacus lorem, sit scelerisque. Proin duis auctor ut. Turpis? Sed, diam elit sed velit dapibus phasellus, pulvinar mattis! Sociis augue in parturient sed ultricies et.</p>');
-		$tester->prop('status', 'published');
-
-		//echo '<pre>$tester->val(): '; print_r($tester->val()); echo '</pre>'; die();
-
-
-		$tester->store();
-
-
-		echo '<pre>$tester->export(): '; print_r($tester->export()); echo '</pre>'; die();
-
-
-		/*$tester = Datastore::getAssetById(11);
-		echo $tester->render('title');
-
-		echo $tester->form('title');
-
-		echo $tester->getMetadataForm();
-
-		echo $tester->getForm();
-
-
-		print_r($tester->getFieldValues());*/
-
-		/*
-		$tester = Datastore::getAsset(ContentAsset::class);
-
-        $tester->prop('content', '<p>Rhoncus hac aliquam aliquam! Et mauris, et quis platea ut elementum natoque sit natoque lectus augue integer aliquam porta rhoncus nec, cursus diam a parturient augue ut! Tincidunt eros urna lacus lorem, sit scelerisque. Proin duis auctor ut. Turpis? Sed, diam elit sed velit dapibus phasellus, pulvinar mattis! Sociis augue in parturient sed ultricies et.</p>');
-		$tester->prop('status', 'published');
-
-		//$tester->prop('title', 'Moe Title');
-
-		try {
-			$tester->validate($tester->getFieldValues());
-		}catch(\Exception $e){
-			echo $e->getMessage();
-			print_r($e->errors());
-		}
-
-		$tester->prop('title', 'Moe Title');
-		try {
-			$tester->validate($tester->getFieldValues());
-			echo "Form is valid";
-		}catch(\Exception $e){
-			echo $e->getMessage();
-			print_r($e->errors());
-		}
-		(*/
-
-		/*
-		if( $this->input->post('page_title') && $this->input->post('page_slug'))
-		{
-			$this->load->model('database/datastore_pages_model');
-
-			$page = $this->datastore_pages_model->get_where(array('asset' => $newasset->id), null, 1);
-
-			if( ! empty($page))
-			{
-				$this->datastore_pages_model->update(array(
-					'title'	 => $this->input->post('page_title'),
-					'slug' 	 => $this->input->post('page_slug'),
-					'asset'	 => $newasset->id
-				), $page->id);
-			}
-			else
-			{
-				$this->datastore_pages_model->insert(array(
-					'title'	 => $this->input->post('page_title'),
-					'slug' 	 => $this->input->post('page_slug'),
-					'asset'	 => $newasset->id
-				));
-			}
-		}
-
-		*/
-
-	}
-
-
 
 }

@@ -765,10 +765,10 @@ class Datastore{
 	}
 
 	/**
-	 *  gets the form necessary for building the styling and behaviour data
+	 * gets the form necessary for building the styling and behaviour data
 	 * @return string
 	 */
-	public function getDeveloperForm()
+	public function getDeveloperForm() :string
 	{
 		$output = null;
 		// must be a parent asset
@@ -810,7 +810,7 @@ class Datastore{
 	 * Validates the current form
 	 * @return boolean if the form is valid or not
 	 */
-	public function validate($request = null)
+	public function validate($request = null) :bool
 	{
 
 		$config = array();
@@ -845,7 +845,7 @@ class Datastore{
 	 * gets current datastore id
 	 * @return int
 	 */
-	public function getId()
+	public function getId() :int
 	{
 		return $this->id;
 	}
@@ -854,7 +854,7 @@ class Datastore{
 	 * Gets the current datastore children
 	 * @return array
 	 */
-	public function children()
+	public function children() :array
 	{
 		$return = false;
 
@@ -874,9 +874,9 @@ class Datastore{
 	/**
 	 * does this datastore have this property?
 	 * @param string $prop
-	 * @return boolean
+	 * @return bool
 	 */
-	public function propExists($prop)
+	public function propExists($prop) :bool
 	{
 		if (isset($this->__asset_properties[$prop]))
 		{
@@ -943,18 +943,20 @@ class Datastore{
 	/**
 	 * gets the avaialble status options
 	 *
-	 * @return void
+	 * @return array|bool
 	 */
-	public function statusOptions(){
+	public function statusOptions()
+	{
 		return ($this->__status_equals) ? $this->__asset_properties[$this->__status_equals]['temp']->options : false;
 	}
 
 	/**
 	 * Gets the readable version of the status
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function getStatusValue(){
+	public function getStatusValue() :string
+	{
 		$options = $this->statusOptions();
 		return ($options && Helpers::isAssocArray($options) && isset($options[$this->status])) ? $options[$this->status] : $this->status;
 	}
@@ -962,7 +964,7 @@ class Datastore{
 	/**
 	 * Get / set the current status value
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function status()
 	{
@@ -986,7 +988,8 @@ class Datastore{
 	 *
 	 * @return bool
 	 */
-	public function statusIsActive(){
+	public function statusIsActive() :bool
+	{
 		if($this->__status_equals){
 
 			if(!isset($this->__asset->properties[$this->__status_equals]['published'])){
@@ -1001,77 +1004,47 @@ class Datastore{
 		return true;
 	}
 
-
-	/**
-	 * gets the url for the image.
-	 * @deprecated ???
-	 * @todo - perhaps can be used based on record or moved better place ?
-	 * @param [type] $image_id
-	 *
-	 * @return void
-	 */
-	public static function image_url($image_id)
-	{
-		return Storage::url('file.jpg');
-
-		// get_instance()->load->model('database/files_model');
-
-		// $image = get_instance()->files_model->get_where(array('id' => $image_id), NULL, 1);
-
-		// return ($image) ? $image->url() : 'assets/modules/blog/images/feature-placeholder.png';
-	}
-
-	/**
-	 * Gets an asset by type and value
-	 *
-	 * @param [type] $type
-	 * @param [type] $value
-	 * @deprecated ???
-	 * @return void
-	 */
-	public static function getAssetByTypeValue($type,$value)
-	{
-		$asset = DatastoreModel::where('type' , $type)->where('value', $value)->where('namespace', 'asset')->orderBy('modified', 'desc')->first();
-		if($asset){
-			return self::getAsset($asset->type, $asset->id);
-		}
-		return false;
-	}
-
 	/**
 	 * Gets the url path for the current type
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function urlPath(){
+	public function urlPath() : string
+	{
 		return Helpers::getPath($this->type);
 	}
-
-
 
 	/**
 	 * Gets our view name
 	 *
 	 * @param string $prefix
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function getViewName($prefix = 'frontend.ams'){
+	public function getViewName($prefix = 'frontend.ams') :string
+	{
 		return $this->__asset::getAssetView($prefix);
 	}
 
 	/**
 	 * Magic method to get from teh model if we not included it already
 	 *
-	 * @param [type] $name
+	 * @param string $name
 	 *
-	 * @return void
+	 * @return mixed
 	 */
-	public function __get($name){
+	public function __get($name)
+	{
 		return $this->propExists($name) ? $this->prop($name) : $this->__model->{$name};
 	}
 
-	public function getTitleField(){
+	/**
+	 * gets the title of the asset
+	 *
+	 * @return string
+	 */
+	public function getTitleField() :string
+	{
 		return $this->__value_equals;
 	}
 
