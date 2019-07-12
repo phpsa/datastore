@@ -6,6 +6,8 @@ use Phpsa\Datastore\Facades\Datastore;
 use Phpsa\Datastore\ServiceProvider;
 use Orchestra\Testbench\TestCase;
 
+use Phpsa\Datastore\Ams\ContentAsset;
+
 class DatastoreTest extends TestCase
 {
     protected function getPackageProviders($app)
@@ -23,5 +25,11 @@ class DatastoreTest extends TestCase
     public function testExample()
     {
         $this->assertEquals(1, 1);
-    }
+	}
+
+	public function testCalledClass(){
+		$asset = ContentAsset::getFilename();
+		$this->assertEquals('phpsa-datastore::render.content-asset', $asset);
+
+	}
 }

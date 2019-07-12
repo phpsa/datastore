@@ -1057,7 +1057,7 @@ class Datastore{
 	 * @return void
 	 */
 	public function getViewName($prefix = 'frontend.ams'){
-		return $this->__asset::getFilename($prefix);
+		return $this->__asset::getAssetView($prefix);
 	}
 
 	/**

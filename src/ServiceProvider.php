@@ -72,8 +72,5 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 		Blade::directive('endforDatastores', function () {
 			return "<?php endforeach; ?>";
 		});
-		Blade::directive('datastoreFieldName', function ($data) {
-			return 'hahaha';
-		});
 	}
 }

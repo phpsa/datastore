@@ -24,6 +24,9 @@ use Phpsa\Datastore\Ams\StringAsset;
 use Phpsa\Datastore\Ams\SubHeadingAsset;
 use Phpsa\Datastore\Ams\TextAsset;
 
+
+use Illuminate\Support\Str;
+
 /**
  * Asset class - this is an abstract basis for the assets that shou
  *
@@ -305,30 +308,17 @@ class Asset{
 	}
 
 	/**
-	 * Returns the Class's filename
+	 * Returns the Assets view path syntax
+	 *
+	 * @param string $type
+	 *
 	 * @return string
-	 * @todo test - split by caps / namespace
 	 */
-	public static function getFilename($type = 'render')
+	public static function getAssetView(string $type = 'render') : string
 	{
-		$path = get_called_class();
-		$className = class_basename($path);
-		$parts = explode('\\', $path);
-
-		$split = array_search('Ams', $parts);
-		$ns = array_slice($parts, 0, $split);  // first part
-		$path = array_slice($parts, $split); // second part
-
-		$ns = implode("", $ns);
-
-		//break the class to class and namespace
-		$parts = explode('\\', get_called_class());
-		$className = array_pop($parts);
-		$last = array_pop($parts);
-
-
-		return Helpers::splitByCaps($ns, false, "-") . '::' . $type . '.' . Helpers::splitByCaps($className, false, "-");
-
+		$className = class_basename(get_called_class());
+		$ns = str_replace('\\', '', __NAMESPACE__);
+		return Str::kebab($ns) . "::{$type}." . Str::kebab($className);
 	}
 
 	/**
@@ -342,7 +332,7 @@ class Asset{
 	 */
 	public static function form($args, $injectedform = false)
 	{
-		$template = self::getFilename('form');
+		$template = self::getAssetView('form');
 		if (empty($args['unique_id']))
 		{
 			$args['unique_id'] = uniqid();
@@ -366,7 +356,7 @@ class Asset{
 		if(is_string($params)){
 			$template = $params;
 		} else {
-			$template = is_array($params) && !empty($params['view']) ? $params['view'] : self::getFilename();
+			$template = is_array($params) && !empty($params['view']) ? $params['view'] : self::getAssetView();
 		}
 
 		$params['assetClass'] = get_called_class();
