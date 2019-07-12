@@ -15,7 +15,8 @@ class Helpers {
 	 *
 	 * @return bool
 	 */
-	public static function isAssocArray(array $array){
+	public static function isAssocArray(array $array) :bool
+	{
         if (array() === $array) return false;
         return array_keys($array) !== range(0, count($array) - 1);
 	}
@@ -28,7 +29,7 @@ class Helpers {
 	 * @param string $glue
 	 * @return string
 	 */
-	public static function splitByCaps($string, $ucfirst = true, $glue = false)
+	public static function splitByCaps(string $string, bool $ucfirst = true, string $glue = null) :string
 	{
 		$pattern	 = "/(.)([A-Z])/";
 		$replacement = "\\1 \\2";
@@ -36,18 +37,19 @@ class Helpers {
 			ucfirst(preg_replace($pattern, $replacement, $string)) :
 			strtolower(preg_replace($pattern, $replacement, $string));
 
-		return ($glue) ? str_replace(' ', $glue, $return) : $return;
+		return ($glue !== null) ? str_replace(' ', $glue, $return) : $return;
 	}
 
 	/**
 	 * PArse out the asset type to the class namespaced version.
 	 *
-	 * @param [type] $queryString
+	 * @param string $queryString
 	 * @param bool $key
 	 *
-	 * @return void
+	 * @return string|array
 	 */
-	public static function parseAssetType($queryString, $key = false){
+	public static function parseAssetType(string $queryString, bool $key = false)
+	{
 		$assetParts = explode(".", strtolower($queryString));
 		if(count($assetParts) > 2){
 			throw new DatastoreException("Assets are only 2 tiers deep");
@@ -66,11 +68,12 @@ class Helpers {
 	/**
 	 * Gets the asset definition
 	 *
-	 * @param [type] $className
+	 * @param string $className
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public static function getAssetItem($className){
+	public static function getAssetItem(string $className) :array
+	{
 		return array(
 			'class'			 => $className,
 			'name'			 => Self::assetInfo($className, 'name'),
@@ -114,9 +117,9 @@ class Helpers {
 	 * @param bool $grouped groupd by type
 	 * @param bool $includeChildren includ child assets
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public static function getAssetList($grouped = false, $includeChildren = true)
+	public static function getAssetList(bool $grouped = false, bool $includeChildren = true) : array
 	{
 		$assets = array();
 		$datastoreAssets = config("datastore.assets");
@@ -181,7 +184,7 @@ class Helpers {
 	 * @param string $class
 	 * @return string
 	 */
-	public static function getModule($class)
+	public static function getModule(string $class) : string
 	{
 		$parts = explode('\\', $class);
 		array_pop($parts);
@@ -198,7 +201,7 @@ class Helpers {
 	 * @param string $className
 	 * @return string
 	 */
-	public static function assetNamespace($className)
+	public static function assetNamespace($className) :string
 	{
 		return self::callStatic($className, 'getNamespace');
 	}
@@ -206,12 +209,12 @@ class Helpers {
 	/**
 	 * gets the url path for the asset
 	 *
-	 * @param [type] $className
+	 * @param string $className
 	 *
-	 * @return void
-	 * @author Craig Smith <craig.smith@customd.com>
+	 * @return string
 	 */
-	public static function getPath($className){
+	public static function getPath(string $className) :string
+	{
 		$mod = self::getModule($className);
 		$sn = Self::assetInfo($className, 'shortname');
 		return !empty($mod) ? strtolower($mod .'.' . $sn) : strtolower($sn);
@@ -224,7 +227,7 @@ class Helpers {
 	 * @param array $params_array method parameters
 	 * @return mixed
 	 */
-	public static function callStatic($classname, $method, $params_array = array())
+	public static function callStatic(string $classname, string $method, array $params_array = array())
 	{
 		return call_user_func_array(array($classname, $method), $params_array);
 	}
@@ -235,7 +238,7 @@ class Helpers {
 	 * @param mixed $lookup - what information to lookup
 	 * @return mixed information
 	 */
-	public static function assetInfo($classname, $lookup = false)
+	public static function assetInfo(string $classname, $lookup = false)
 	{
 		return self::callStatic($classname, 'getinfo', array($lookup));
 	}
@@ -246,7 +249,7 @@ class Helpers {
 	 * @param string $file
 	 * @return string
 	 */
-	public static function getClassnameFromPath($file)
+	public static function getClassnameFromPath(string $file) :string
 	{
 		if (!is_file(FCPATH . $file))
 		{
