@@ -1,3 +1,4 @@
+/* global amsSettings */
 //htmlEditor
 $('.ams-htmleditor').trumbowyg();
 var safeDecodeEntities = (function() {
@@ -22,7 +23,7 @@ var safeDecodeEntities = (function() {
         this.element = element;
         this.options = options;
         this.timer = null;
-        this.items = new Array();
+        this.items = [];
         $(element).attr('autocomplete', 'off');
         $(element).on('focus', $.proxy(this.focus, this));
         $(element).on('blur', $.proxy(this.blur, this));
@@ -44,7 +45,7 @@ var safeDecodeEntities = (function() {
         },
         click: function(event) {
             event.preventDefault();
-            value = $(event.target).data('value');
+            var value = $(event.target).data('value');
             if (value && this.items[value]) {
                 this.options.select(this.items[value]);
             }
@@ -61,7 +62,6 @@ var safeDecodeEntities = (function() {
         },
         show: function() {
             var pos = $(this.element).position();
-            console.log(pos);
             $(this.element).siblings('ul.dropdown-menu').css({
                 left: pos.leftm,
                 top: pos.top + $(this.element).outerHeight(),
@@ -79,9 +79,9 @@ var safeDecodeEntities = (function() {
             }, 350, this);
         },
         response: function(json) {
-            html = '';
+            var html = '';
             if (json.length) {
-                for (i = 0; i < json.length; i++) {
+                for (var i = 0; i < json.length; i++) {
                     this.items[json[i]['value']] = json[i];
                 }
                 for (i = 0; i < json.length; i++) {
@@ -141,7 +141,9 @@ $('input.autoinput').each(function() {
 var timedCall = false;
 $(document).on('keyup', '#pageTitle', function() {
 	if(amsSettings.editing === false) return;
-	if (timedCall) clearTimeout(timedCall);
+	if (timedCall) {
+		clearTimeout(timedCall);
+	}
 	var pageTitle = $(this).val()
 	timedCall = setTimeout(function() {
 		$.get(amsSettings.routes.slug + '?generate=1&page_slug=' + pageTitle)
@@ -162,7 +164,7 @@ if (typeof $.validator !== 'undefined') {
             setTimeout(function() {
                 submits.attr('disabled', false);
                 $('.nav-tabs a strong.required').remove();
-                var validatePane = $('.tab-content.tab-validate .tab-pane:has(input.is-invalid)').each(function() {
+                $('.tab-content.tab-validate .tab-pane:has(input.is-invalid)').each(function() {
                     var id = $(this).attr('id');
                     $('.nav-tabs,.nav-pills').find('a[href^="#' + id + '"]').append(' <strong class="required text-danger">***</strong> ');
                 });
@@ -320,7 +322,7 @@ $('.asset_autocallback').each(function() {
                 q: encodeURIComponent(callback_selector.val()),
                 term: request
             }
-            $.getJSON(url, data, function(data, status, xhr) {
+            $.getJSON(url, data, function(data) {
                 response(data);
             });
         },
@@ -341,7 +343,7 @@ var updateSortedList = function(){
 		var n = $this.find('.idx').length;
 		var ids;
 
-		if(n == 0) {
+		if(n === 0) {
 			$this.find(".frmmsg.information").show();
 			$this.find(".frmmsg.note").hide();
 		}else{
@@ -360,7 +362,7 @@ var updateSortedList = function(){
 updateSortedList()
 
 $('.awd_list_container .sortableMenu').each(function() {
-	var sortableList = $(this).sortable({
+	$(this).sortable({
 		handle: '.handle',
 		sort: true,  // sorting inside list
 		animation: 150,
